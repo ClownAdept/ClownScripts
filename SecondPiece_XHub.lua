@@ -4283,12 +4283,13 @@ getgenv().Configs = {
       game.Players.LocalPlayer.Character.HumanoidRootPart .CFrame = v.Parent.CFrame
       end
     end
+   wait(1)
    repeat task.wait(1)
    A()
      v.HumanoidRootPart.Size = Vector3.new(10,10,10)
      v.HumanoidRootPart.Transparency = 0.9
      v.Humanoid.WalkSpeed = 0
-  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame*CFrame.new(0,5,0)*CFrame.Angles(math.rad(-90),0,0)
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame*CFrame.new(0,0,3)*CFrame.Angles(math.rad(0),0,0)
     until _G.op == false or v.Humanoid.Health <= 0
            end
           end
