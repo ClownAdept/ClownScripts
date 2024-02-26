@@ -4260,19 +4260,19 @@ getgenv().Configs = {
      pcall(function()
       if _G.op then
        for _,v in pairs(game:GetService("Workspace").Lives:GetDescendants()) do
-         if v.Name == "Shadow" 
+         if v.Name == "Ichigo" 
+     or v.Name == "Shadow"
      or v.Name == "Gojo"
      or v.Name == "Kashimo" 
      or v.Name == "Sukuna" 
-     or v.Name == "Snow Bandit Leader" 
-     or v.Name == "Shank"
      or v.Name == "Artoria"
      or v.Name == "Killua"
-     or v.Name == "Ichigo"
      or v.Name == "Rimuru"
      or v.Name == "Gojo [Unleashed]"
      or v.Name == "Sukuna [Half Power]"
      or v.Name == "Uraume"
+     or v.Name == "Shank"
+     or v.Name == "Snow Bandit Leader" 
      or v.Name == "Monkey King"
      or v.Name == "Sand Man"
      or v.Name == "Bomb Man"
