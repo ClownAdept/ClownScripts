@@ -4283,7 +4283,6 @@ getgenv().Configs = {
       game.Players.LocalPlayer.Character.HumanoidRootPart .CFrame = v.Parent.CFrame
       end
     end
-   wait(1)
    repeat task.wait(1)
    A()
      v.HumanoidRootPart.Size = Vector3.new(10,10,10)
