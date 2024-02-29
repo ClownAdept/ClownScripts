@@ -4792,7 +4792,7 @@ end
 end)
 
 
-a7:ToggleDesc("AtinAFK","",nil,function(t)
+a7:ToggleDesc("AntiAFK","",nil,function(t)
 _G.AntiAFKEnabled = t
    local vu = game:GetService("VirtualUser")
    game.Players.LocalPlayer.Idled:connect(function()
