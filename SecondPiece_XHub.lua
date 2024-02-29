@@ -3989,7 +3989,7 @@ function ui:W1n(text,text2,text2Pos,toclose)
  return uitop
 end
 
-local win = ui:W1n("🤡💀A Script     |","Second Piece",0.30,Enum.KeyCode.RightControl)
+local win = ui:W1n("🤡💀A Clowny Script     |","Second Piece",0.30,Enum.KeyCode.RightControl)
 
 local Tap = win:Tap("Farm")
 local Tap2 = win:Tap("Players")
