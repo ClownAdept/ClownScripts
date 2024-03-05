@@ -2235,9 +2235,18 @@ Library:OnUnload(function()
     Library.Unloaded = true
 end)
 
+local MenuGroup = Tabs['UI Settings']:AddLeftGroupbox('Menu')
+
+-- I set NoUI so it does not show up in the keybinds menu
+MenuGroup:AddButton('Unload', function() Library:Unload() end)
+MenuGroup:AddLabel('Menu bind'):AddKeyPicker('MenuKeybind', { Default = 'End', NoUI = true, Text = 'Menu keybind' })
+
+Library.ToggleKeybind = Options.MenuKeybind
+
 -- UI Settings
 
 local WaterMaerkOptions = Tabs['UI Settings']:AddRightGroupbox('Settings')
+
 WaterMaerkOptions:AddToggle('enablewatermark', {
     Text = 'Show watermark',
     Default = true, -- Default value (true / false)
@@ -2281,9 +2290,6 @@ Toggles.showwatermarkdate:OnChanged(function()
         Library:SetWatermark(scriptversion..' | '..'UID: '..uid)
     end
 end)
-
-WaterMaerkOptions:AddButton('Unload', function() Library:Unload() end)
-WaterMaerkOptions:AddLabel('Menu bind'):AddKeyPicker('MenuKeybind', { Default = 'K', NoUI = true, Text = 'Menu keybind' })
 
 
 
