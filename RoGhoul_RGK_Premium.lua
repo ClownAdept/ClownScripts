@@ -82,11 +82,9 @@ local Players = game:GetService('Players')
 local UserInputService = game:GetService('UserInputService')
 local LocalPlayer = Players.LocalPlayer
 
-local repo = 'https://raw.githubusercontent.com/wally-rblx/LinoriaLib/main/'
-
-local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
-local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))()
-local SaveManager = loadstring(game:HttpGet(repo .. 'addons/SaveManager.lua'))()
+local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/violin-suzutsuki/LinoriaLib/main/Library.lua'))()
+local ThemeManager = loadstring(game:HttpGet('https://raw.githubusercontent.com/violin-suzutsuki/LinoriaLib/main/addons/ThemeManager.lua'))()
+local SaveManager = loadstring(game:HttpGet('https://raw.githubusercontent.com/violin-suzutsuki/LinoriaLib/main/addons/SaveManager.lua'))()
 Library:Notify("Whitelisting took: "..math.round(endTime-startTime).." seconds")
 
 
@@ -130,14 +128,6 @@ local Skyboxes = {
         ["SkyboxLf"] = "rbxassetid://7950700557",
         ["SkyboxRt"] = "rbxassetid://7950702581",
         ["SkyboxUp"] = "rbxassetid://7950704792"
-    },
-    ["Midnight"] = {
-        ["SkyboxBk"] = "rbxassetid://7950569153",
-        ["SkyboxDn"] = "rbxassetid://7950570785",
-        ["SkyboxFt"] = "rbxassetid://7950572449",
-        ["SkyboxLf"] = "rbxassetid://7950573918",
-        ["SkyboxRt"] = "rbxassetid://7950575055",
-        ["SkyboxUp"] = "rbxassetid://7950627627"
     },
     ["Midnight"] = {
         ["SkyboxBk"] = "rbxassetid://7950569153",
@@ -2293,7 +2283,7 @@ Toggles.showwatermarkdate:OnChanged(function()
 end)
 
 WaterMaerkOptions:AddButton('Unload', function() Library:Unload() end)
-WaterMaerkOptions:AddLabel('Menu bind'):AddKeyPicker('MenuKeybind', { Default = 'End', NoUI = true, Text = 'Menu keybind' })
+WaterMaerkOptions:AddLabel('Menu bind'):AddKeyPicker('MenuKeybind', { Default = 'K', NoUI = true, Text = 'Menu keybind' })
 
 
 
