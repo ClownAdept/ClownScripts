@@ -7,6 +7,5 @@ for i, v in pairs(hwidlist) do
         print("whitelisted")
     else
         print("not whitelisted")
-        game.Players.LocalPlayer:Kick("You are Not Whitelisted, Join the Discord Server (https://discord.gg/HZQE9kZbGx), or DM me on discord clown.hz  Sorry!")
     end
 end
