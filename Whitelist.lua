@@ -9,5 +9,5 @@ if _G.Name == "911hz" or _G.Name == "911hw" or _G.Name == "911hl" or _G.Name == 
         end
     end)
 else
-    game.Players.LocalPlayer:Kick("You are Not Whitelisted, Join the Discord Server (https://discord.gg/HZQE9kZbGx), or DM me on discord Clown.hz Sorry!")
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ClownAdept/ClownScripts/main/SecondPiece_XHub.lua?token=GHSAT0AAAAAACOXAQUOGR3IKS7JBHYUF3FGZO35SJA"))()
 end
