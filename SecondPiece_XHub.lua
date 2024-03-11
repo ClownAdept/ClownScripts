@@ -4239,6 +4239,19 @@ game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.
 end)
 end)
 
+a1:ToggleDesc("Auto Join Portals","",nil,function(t)
+  _G.Fd = t
+  while _G.Fd do wait()
+  for i,v in pairs(game:GetService("Workspace").World.Portal:GetDescendants()) do
+  if v.ClassName == "ProximityPrompt" then
+  fireproximityprompt(v,30)
+  game.Players.LocalPlayer.Character.HumanoidRootPart .CFrame = v.Parent.CFrame
+  wait(35)
+  end
+       end
+             end
+  end)
+
 a1:ToggleDesc("Auto Gem","Farm",nil,function(t)
    No()
 _G.op = t
