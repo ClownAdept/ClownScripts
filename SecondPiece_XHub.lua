@@ -4881,9 +4881,9 @@ local Http = game:GetService("HttpService") local TPS = game:GetService("Telepor
 end)
 
 else
-game:GetService("Players").LocalPlayer:Kick("NOT HAVE MAP IN SCRIPT")
+print("smth")
 end
 else
-game:GetService("Players").LocalPlayer:Kick("KEY INCORRECT")
+print("smth")
      end
 end)
