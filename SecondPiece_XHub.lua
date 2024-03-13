@@ -4337,7 +4337,13 @@ getgenv().Configs = {
           for _,v in pairs(game:GetService("Workspace").Lives:GetDescendants()) do
             if v.Name == "MarineDungeon" 
         or v.Name == "LieutenantMarine"
-        or v.Name == "Vice Admiral" and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health >= 1 then
+        or v.Name == "Vice Admiral"
+        or v.Name == "Shadow Soldier"
+        or v.Name == "Shadow Artoria"
+        or v.Name == "Shadow Natsu"
+        or v.Name == "Shadow Sukuna"
+        or v.Name == "Shadow Lord"
+        or v.Name == "Cid" and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health >= 1 then
          for i,v in pairs(game:GetService("Workspace").Chests:GetDescendants()) do
          if v.ClassName == "ProximityPrompt" then
          fireproximityprompt(v,30)
