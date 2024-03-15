@@ -4858,7 +4858,7 @@ getgenv().Configs = {
   end)
   
   
-  a7:ToggleDesc("AtinAFK","",nil,function(t)
+  a7:ToggleDesc("AntiAFK","",nil,function(t)
   _G.AntiAFKEnabled = t
      local vu = game:GetService("VirtualUser")
      game.Players.LocalPlayer.Idled:connect(function()
@@ -4874,6 +4874,13 @@ getgenv().Configs = {
   _G.WhiteScreen = t
      while wait(0.1) do
          game:GetService("RunService"):Set3dRenderingEnabled(not _G.WhiteScreen)
+       end
+  end)
+
+  a7:ToggleDesc("SCRIPT BUG FIX","",nil,function(t)
+     while wait() do
+             wait(900)
+             game.Players.LocalPlayer.Character.Humanoid.Health = 0
        end
   end)
   
