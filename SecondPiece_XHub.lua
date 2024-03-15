@@ -4010,7 +4010,7 @@ getgenv().Configs = {
   a4:Title("Stats")
   a5:Title("Island")
   a6:Title("Shop")
-  a7:Title("BOOTS FPS")
+  a7:Title("BOOST FPS")
   a8:Title("Credit")
   
   function No()
@@ -4877,7 +4877,7 @@ getgenv().Configs = {
        end
   end)
   
-  a7:Button("Boots FPS", function()
+  a7:Button("Boost FPS", function()
   local decalsyeeted = true
      local g, w, l = game, game.Workspace, game.Lighting
      local t = w.Terrain
