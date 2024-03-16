@@ -4262,6 +4262,7 @@ getgenv().Configs = {
        for _,v in pairs(game:GetService("Workspace").Lives:GetDescendants()) do
          if v.Name == "Ichigo" 
      or v.Name == "Gilgamesh"
+     or v.Name == "[Demon] Chxmei"
      or v.Name == "Tatsumaki"
      or v.Name == "Shadow"
      or v.Name == "Natsu"
