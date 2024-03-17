@@ -4131,10 +4131,7 @@ getgenv().Configs = {
   a1:Dropdown("Select Mobs",MON,function(Select)
      free = Select
   end)
-  
-  a1:Dropdown("Select Boss Event",boss,function(Select)
-     Boss = Select
-  end)
+
   
   a1:ToggleDesc("Auto Equip","Equip",nil,function(t)
   _G.Equip = t 
@@ -4205,43 +4202,25 @@ getgenv().Configs = {
   end
   end)
   end)
-  
-  a1:ToggleDesc("Auto Boss","Farm",nil,function(t)
-     No()
-  _G.p = t
-  
-  function A()
-   game:GetService'VirtualUser':CaptureController()
-  game:GetService'VirtualUser':Button1Down(Vector2.new(1280, 672))
-  end
-  
-  
-  spawn(function()
-         while wait() do 
-     pcall(function()
-      if _G.p then
-       for _,v in pairs(game:GetService("Workspace").Lives:GetDescendants()) do
-         if v.Name == Boss and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health >= 1 then
-   repeat task.wait()
-   A()
-     v.HumanoidRootPart.Size = Vector3.new(10,10,10)
-     v.HumanoidRootPart.Transparency = 0.9
-     v.Humanoid.WalkSpeed = 0
-  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame*CFrame.new(0,5,0)*CFrame.Angles(math.rad(-90),0,0)
-    until _G.p == false or v.Humanoid.Health <= 0
-           end
-          end
-        end
-      end)
-     end
-  end)
-  end)
-  
+
   
   
   a1:ToggleDesc("Auto Gem","Farm",nil,function(t)
      No()
   _G.op = t
+
+local args = {
+    [1] = "BusoHaki"
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("SkillHolder"):FireServer(unpack(args))
+wait(.1)
+local args = {
+    [1] = "KenHaki"
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("SkillHolder"):FireServer(unpack(args))
+
   
   function A()
     game:GetService'VirtualUser':CaptureController()
@@ -4288,7 +4267,7 @@ getgenv().Configs = {
       game.Players.LocalPlayer.Character.HumanoidRootPart .CFrame = v.Parent.CFrame
       end
     end
-   repeat task.wait(.1)
+   repeat task.wait(0.1)
    A()
      v.HumanoidRootPart.Size = Vector3.new(10,10,10)
      v.HumanoidRootPart.Transparency = 0.9
@@ -4303,69 +4282,6 @@ getgenv().Configs = {
   end)
   end)
 
-  a1:ToggleDesc("Auto Join Portals","",nil,function(t)
-    _G.Fd = t
-    while _G.Fd do wait()
-    for i,v in pairs(game:GetService("Workspace").World.Portal:GetDescendants()) do
-    if v.ClassName == "ProximityPrompt" then
-    fireproximityprompt(v,30)
-    game.Players.LocalPlayer.Character.HumanoidRootPart .CFrame = v.Parent.CFrame
-    wait(35)
-    end
-         end
-               end
-    end)
-
-    a1:ToggleDesc("Auto Portal kills","Farm",nil,function(t)
-        No()
-     _G.op = t
-     
-     function A()
-       game:GetService'VirtualUser':CaptureController()
-      game:GetService'VirtualUser':Button1Down(Vector2.new(1280, 672))
-      for i,v in pairs(game:GetService("Workspace").Chests:GetDescendants()) do
-        if v.ClassName == "ProximityPrompt" then
-        fireproximityprompt(v,30)
-        game.Players.LocalPlayer.Character.HumanoidRootPart .CFrame = v.Parent.CFrame
-        end
-     end
-      end
-     
-     
-     spawn(function()
-            while wait() do 
-        pcall(function()
-         if _G.op then
-          for _,v in pairs(game:GetService("Workspace").Lives:GetDescendants()) do
-            if v.Name == "MarineDungeon" 
-        or v.Name == "LieutenantMarine"
-        or v.Name == "Vice Admiral"
-        or v.Name == "Shadow Soldier"
-        or v.Name == "Shadow Artoria"
-        or v.Name == "Shadow Natsu"
-        or v.Name == "Shadow Sukuna"
-        or v.Name == "Shadow Lord"
-        or v.Name == "Cid" and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health >= 1 then
-         for i,v in pairs(game:GetService("Workspace").Chests:GetDescendants()) do
-         if v.ClassName == "ProximityPrompt" then
-         fireproximityprompt(v,30)
-         game.Players.LocalPlayer.Character.HumanoidRootPart .CFrame = v.Parent.CFrame
-         end
-       end
-      repeat task.wait(.1)
-      A()
-        v.HumanoidRootPart.Size = Vector3.new(10,10,10)
-        v.HumanoidRootPart.Transparency = 0.9
-        v.Humanoid.WalkSpeed = 0
-     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame*CFrame.new(0,0,5)*CFrame.Angles(math.rad(0),0,0)
-       until _G.op == false or v.Humanoid.Health <= 0
-              end
-             end
-           end
-         end)
-        end
-     end)
-     end)
   
   
   
@@ -4879,12 +4795,6 @@ getgenv().Configs = {
        end
   end)
 
-  a7:ToggleDesc("SCRIPT BUG FIX","",nil,function(t)
-     while wait() do
-             wait(900)
-             game.Players.LocalPlayer.Character.Humanoid.Health = 0
-       end
-  end)
   
   a7:Button("Boost FPS", function()
   local decalsyeeted = true
@@ -4936,7 +4846,17 @@ getgenv().Configs = {
   loadstring(game:HttpGet("https://pastebin.com/raw/y5reZYnG", true))()
   end)
   
+  a7:Button("Rejoin Server", function()
+    local ts = game:GetService("TeleportService")
+
+    local p = game:GetService("Players").LocalPlayer
+
+
+
+    ts:TeleportToPlaceInstance(game.PlaceId, game.JobId, p)
+end)
+
   a7:Button("Server Hop", function()
-  local Http = game:GetService("HttpService") local TPS = game:GetService("TeleportService") local Api = "https://games.roblox.com/v1/games/" local _place = game.PlaceId local _servers = Api.._place.."/servers/Public?sortOrder=Asc&limit=100" function ListServers(cursor) local Raw = game:HttpGet(_servers .. ((cursor and "&cursor="..cursor) or "")) return Http:JSONDecode(Raw) end local Server, Next; repeat local Servers = ListServers(Next) Server = Servers.data[1] Next = Servers.nextPageCursor until Server TPS:TeleportToPlaceInstance(_place,Server.id,game.Players.LocalPlayer)
-  end)
+    local Http = game:GetService("HttpService") local TPS = game:GetService("TeleportService") local Api = "https://games.roblox.com/v1/games/" local _place = game.PlaceId local _servers = Api.._place.."/servers/Public?sortOrder=Asc&limit=100" function ListServers(cursor) local Raw = game:HttpGet(_servers .. ((cursor and "&cursor="..cursor) or "")) return Http:JSONDecode(Raw) end local Server, Next; repeat local Servers = ListServers(Next) Server = Servers.data[1] Next = Servers.nextPageCursor until Server TPS:TeleportToPlaceInstance(_place,Server.id,game.Players.LocalPlayer)
+    end)
 end)
