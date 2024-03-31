@@ -4551,7 +4551,7 @@ game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Skill
   end)
   
   a5:Button("Shell Town", function()
-  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(886.932739, 35.5073013, 1153.22998, -0.0238624346, 4.11765164e-08, -0.999715269, 1.07852067e-07, 1, 3.86138979e-08, 0.999715269, -1.06899932e-07, -0.0238624346)
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(838.86554, 34.9085999, 1084.17712, -0.999843359, -0.000204709082, 0.0176962297, -4.12844514e-09, 0.999933124, 0.0115669426, -0.0176974125, 0.0115651311, -0.999776483)
   
   end)
   
@@ -4560,13 +4560,9 @@ game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Skill
   
   end)
   
-  a5:Button("Sunset Isle", function()
-  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-696.604614, 36.2596169, 786.971252, -0.0137904296, 3.84323009e-08, -0.999904931, -8.1107423e-09, 1, 3.85478174e-08, 0.999904931, 8.64156213e-09, -0.0137904296)
-  
-  end)
   
   a5:Button("Frost Isle", function()
-  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1640.46484, 41.6599922, -355.940918, -0.999989569, 2.44405012e-08, 0.00457085157, 2.402248e-08, 1, -9.15084968e-08, -0.00457085157, -9.13977374e-08, -0.999989569)
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1690.80603, 37.1273041, -136.344711, -0.0490881912, 0.0121994633, -0.998719931, -6.38758948e-08, 0.999925375, 0.0122141913, 0.998794436, 0.000599636347, -0.0490845293)
   
   end)
   
@@ -4596,47 +4592,10 @@ game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Skill
   end)
   
   a5:Button("Cursed Isle", function()
-  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-2415.01636, 33.8787766, -1315.07935, 0.0854611695, -1.44168224e-08, 0.996341527, -9.54939097e-08, 1, 2.26607479e-08, -0.996341527, -9.70811627e-08, 0.0854611695)
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-2202.87866, 40.262989, -1229.82825, -0.999984086, 1.32150572e-05, -0.00564281736, 6.1271102e-08, 0.999997258, 0.00233106106, 0.00564283272, 0.0023310238, -0.999981344)
   
   end)
-  
-  a5:Label("Event Island")
-  
-  a5:Button("Niflheim Island", function()
-  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2019.97729, 118.110451, -2310.68457, -0.999597907, 0, -0.0283546709, 0, 0.99999994, -0, 0.0283546709, -0, -0.999597907)
-  
-  end)
-  
-  a5:Label("Shadow Boss Spawn")
-  
-  a5:Button("Frost Isle", function()
-  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1506.47339, 136.759964, -209.360397, -0.015526263, -2.25340333e-08, 0.999879479, 6.08013906e-08, 1, 2.3480883e-08, -0.999879479, 6.11586373e-08, -0.015526263)
-  
-  end)
-  
-  a5:Button("Sunset Isle", function()
-  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-729.227905, 52.2595978, 939.722168, 0.990753412, -7.97407438e-08, -0.135674879, 6.86500528e-08, 1, -8.64233201e-08, 0.135674879, 7.63101085e-08, 0.990753412)
-  
-  end)
-  
-  a5:Button("Autumnal Island", function()
-  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1864.88025, 50.2648354, 44.572113, 0.0335859843, -1.23333841e-08, -0.999435842, -7.68625199e-08, 1, -1.4923307e-08, 0.999435842, 7.73203723e-08, 0.0335859843)
-  
-  end)
-  
-  a5:Label("Sukuna and Gojo Spawn")
-  
-  a5:Button("Forgotten Island", function()
-  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-695.397583, 44.025898, -2004.11902, 0.999338925, -4.83633311e-09, 0.0363560542, 8.25968627e-09, 1, -9.40116536e-08, -0.0363560542, 9.4249792e-08, 0.999338925)
-  
-  end)
-  
-  a5:Label("Shank Spawn")
-  
-  a5:Button("Cursed Isle", function()
-  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-2415.01636, 33.8787766, -1315.07935, 0.0854611695, -1.44168224e-08, 0.996341527, -9.54939097e-08, 1, 2.26607479e-08, -0.996341527, -9.70811627e-08, 0.0854611695)
-  
-  end)
+
      
   a6:ToggleDesc("Auto Random fruit Gem","",nil,function(t)
      _G.gg = t
