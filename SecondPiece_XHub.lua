@@ -4074,8 +4074,6 @@ elseif free == "Snow Bandit" then
 MONName = "Snow Bandit [LV.1750]"
 elseif free == "Snow Bandit Leader" then
 MONName = "Snow Bandit Leader [LV.2350]"
-elseif free == "Criminal" then
-  MONName = "Bounty Criminal"
 end
 end
 
@@ -4335,12 +4333,12 @@ a1:ToggleDesc("AutoGet Bounty Quest","Quest",nil,function(t)
      game.Players.LocalPlayer.Character.HumanoidRootPart .CFrame = v.Parent.CFrame
      end
    end
-  repeat task.wait(0.1)
+  repeat task.wait()
   A()
     v.HumanoidRootPart.Size = Vector3.new(10,10,10)
     v.HumanoidRootPart.Transparency = 0.9
     v.Humanoid.WalkSpeed = 0
- game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame*CFrame.new(0,0,5)*CFrame.Angles(math.rad(0),0,0)
+   game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame*CFrame.new(0,5,0)*CFrame.Angles(math.rad(-90),0,0)
    until _G.bq == false or v.Humanoid.Health <= 0
           end
          end
