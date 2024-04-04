@@ -4274,7 +4274,7 @@ end)
   a1:ToggleDesc("Auto Bounty Quest","Farm",nil,function(t)
     No()
  _G.bq = t
- _G.AutoQuest = t
+ _G.AutobQuest = t
  
  
  function A()
@@ -4288,7 +4288,7 @@ end)
  end
   end
   spawn(function()
-    while _G.AutoQuest do wait()
+    while _G.AutobQuest do wait()
     pcall(function()
     if not game.Workspace.Lives:FindFirstChild("Criminal") then
     repeat task.wait()
@@ -4297,7 +4297,7 @@ end)
       game:service('VirtualInputManager'):SendKeyEvent(true, "E", false, game)
       wait(1)
       game:service('VirtualInputManager'):SendKeyEvent(false, "E", false, game)
-    until _G.AutoQuest == false or game.Workspace.Lives:FindFirstChild("Criminal")
+    until _G.AutobQuest == false or game.Workspace.Lives:FindFirstChild("Criminal")
     end
     end)
     end
