@@ -4094,8 +4094,6 @@ elseif free == "Snow Bandit" then
 CFrameQuest = CFrame.new(1507.57898, 102.05999, -290.12558, -0.998586833, -8.202373e-09, -0.0531440228, -1.01186872e-08, 1, 3.57898209e-08, 0.0531440228, 3.62769903e-08, -0.998586833)
 elseif free == "Bomb Man" or "Sand Man" or "Snow Bandit Leader" then
 CFrameQuest = nil
-elseif free == "Bounty Quest" then
-  CFrameQuest = CFrame.new(-911.359436, 41.7276421, 1112.84644, 1, 0, 0, 0, 0.99946171, 0.0328064673, 0, -0.0328064673, 0.99946171)
 end
 end
 
@@ -4272,41 +4270,11 @@ game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.
 end)
 end)
 
-a1:ToggleDesc("AutoGet Bounty Quest","Quest",nil,function(t)
-  _G.AutoQuest = t
-  spawn(function()
-  while _G.AutoQuest do wait()
-  pcall(function()
-  QuestA()
-  if not game.Players.LocalPlayer.PlayerGui:FindFirstChild("QuestUI") then
-  repeat task.wait()
-    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-911.711487, 41.7252045, 1114.65466, 0.9993909, 0.00116581446, -0.0348785296, 1.34973668e-08, 0.999441862, 0.0334067158, 0.0348980092, -0.0333863683, 0.99883312)
-    wait(1)
-    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-923.408142, 41.7274246, 1125.69763, -0.999997318, -7.58415481e-05, 0.00230668089, -2.25558106e-09, 0.999459922, 0.0328603461, -0.00230792747, 0.0328602567, -0.99945724)
-    wait(1)
-  until not _G.AutoQuest or game.Players.LocalPlayer.PlayerGui:FindFirstChild("QuestUI")
-  end
-  end)
-  end
-  end)
-  
-  spawn(function()
-  while _G.AutoQuest do wait()
-  pcall(function()
-  for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
-  if v.Name == "ProximityPrompt" then
-  fireproximityprompt(v,30)
-  end
-  end
-  end)
-  end
-  end)
-  end)
-  
 
-  a1:ToggleDesc("Complete Bounty Quest","Farm",nil,function(t)
+  a1:ToggleDesc("Auto Bounty Quest","Farm",nil,function(t)
     No()
  _G.bq = t
+ _G.AutoQuest = t
  
  
  function A()
@@ -4319,7 +4287,21 @@ a1:ToggleDesc("AutoGet Bounty Quest","Quest",nil,function(t)
     end
  end
   end
- 
+  spawn(function()
+    while _G.AutoQuest do wait()
+    pcall(function()
+    if not game.Workspace.Lives:FindFirstChild("Criminal") then
+    repeat task.wait()
+      game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-911.711487, 41.7252045, 1114.65466, 0.9993909, 0.00116581446, -0.0348785296, 1.34973668e-08, 0.999441862, 0.0334067158, 0.0348980092, -0.0333863683, 0.99883312)
+      wait(1)
+      game:service('VirtualInputManager'):SendKeyEvent(true, "E", false, game)
+      wait(1)
+      game:service('VirtualInputManager'):SendKeyEvent(false, "E", false, game)
+    until _G.AutoQuest == false or game.Workspace.Lives:FindFirstChild("Criminal")
+    end
+    end)
+    end
+    end)
  
  spawn(function()
         while wait() do 
@@ -4396,15 +4378,6 @@ game:service('VirtualInputManager'):SendKeyEvent(true, "F", false, game)
       end)
    end
 end)
-
-a2:ToggleDesc("Skill E","",nil,function(t)
-  _G.e = t 
-  while _G.e do wait() 
-     pcall(function()
-  game:service('VirtualInputManager'):SendKeyEvent(true, "E", false, game)
-        end)
-     end
-  end)
 
 
 Playerslist = {}
