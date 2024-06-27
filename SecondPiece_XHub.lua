@@ -4652,7 +4652,7 @@ while _G.gg do wait()
 for i,v in pairs(game:GetService("Workspace").NPC.Beatrice:GetDescendants()) do
 if v.ClassName == "ProximityPrompt" then
 fireproximityprompt(v,30)
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-678.876404, 41.515667, -1810.50916, -0.566575229, 0.0115581471, -0.823928952, 3.39483321e-08, 0.999901593, 0.0140266838, 0.824010015, 0.00794714317, -0.566519499)
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-677.699585, 40.9749565, -1811.07788, -0.791487336, 0.0638560653, 0.607840598, 0, 0.994527102, -0.104479022, -0.611185551, -0.0826938227, -0.787155628)
 end
 end
 end
@@ -4661,10 +4661,10 @@ end)
 a6:ToggleDesc("Auto Random fruit Beli","",nil,function(t)
    _G.xm = t
 while _G.xm do wait()
-for i,v in pairs(game:GetService("Workspace").Shop:GetDescendants()) do
+for i,v in pairs(game:GetService("Workspace").NPC.Beatrice:GetDescendants()) do
 if v.ClassName == "ProximityPrompt" then
 fireproximityprompt(v,30)
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-678.876404, 41.515667, -1810.50916, -0.566575229, 0.0115581471, -0.823928952, 3.39483321e-08, 0.999901593, 0.0140266838, 0.824010015, 0.00794714317, -0.566519499)
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(949.346313, 63.0444031, 1328.21484, 1, 0, 0, 0, 0.994527102, -0.104479022, 0, 0.104479022, 0.994527102)
 end
 end
 end
