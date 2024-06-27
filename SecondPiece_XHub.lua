@@ -4292,11 +4292,10 @@ end)
     pcall(function()
     if not game.Workspace.Lives:FindFirstChild("Criminal") then
     repeat task.wait()
-      game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-911.711487, 41.7252045, 1114.65466, 0.9993909, 0.00116581446, -0.0348785296, 1.34973668e-08, 0.999441862, 0.0334067158, 0.0348980092, -0.0333863683, 0.99883312)
-      wait(1)
-      game:service('VirtualInputManager'):SendKeyEvent(true, "E", false, game)
-      wait(1)
-      game:service('VirtualInputManager'):SendKeyEvent(false, "E", false, game)
+      for i,v in pairs(game:GetService("Workspace").NPC.Kuru:GetDescendants()) do
+        if v.ClassName == "ProximityPrompt" then
+        fireproximityprompt(v,30)
+        wait(1)
     until _G.AutobQuest == false or game.Workspace.Lives:FindFirstChild("Criminal")
     end
     end)
