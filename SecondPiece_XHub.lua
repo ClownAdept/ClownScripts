@@ -4649,10 +4649,10 @@ end)
 a6:ToggleDesc("Auto Random fruit Gem","",nil,function(t)
    _G.gg = t
 while _G.gg do wait()
-for i,v in pairs(game:GetService("Workspace").Shop:GetDescendants()) do
+for i,v in pairs(game:GetService("Players"):GetDescendants()) do
 if v.ClassName == "ProximityPrompt" then
 fireproximityprompt(v,30)
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-928.491516, 33.976368, -599.29248, 0, -0.104479045, -0.994527102, 0, 0.994527102, -0.104479045, 1, 0, 0)
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-678.876404, 41.515667, -1810.50916, -0.566575229, 0.0115581471, -0.823928952, 3.39483321e-08, 0.999901593, 0.0140266838, 0.824010015, 0.00794714317, -0.566519499)
 end
 end
 end
