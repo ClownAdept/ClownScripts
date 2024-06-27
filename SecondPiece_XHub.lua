@@ -4664,7 +4664,7 @@ while _G.xm do wait()
 for i,v in pairs(game:GetService("Workspace").Shop:GetDescendants()) do
 if v.ClassName == "ProximityPrompt" then
 fireproximityprompt(v,30)
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(949.346313, 63.0752373, 1328.21484, 1, 0, 0, 0, 0.994527102, -0.104479022, 0, 0.104479022, 0.994527102)
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-814.089294, 38.5850143, -536.340515, 1, 0, 0, 0, 0.994527102, -0.104479022, 0, 0.104479022, 0.994527102)
 end
 end
 end
