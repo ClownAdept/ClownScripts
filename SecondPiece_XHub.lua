@@ -4598,7 +4598,7 @@ game:GetService("ReplicatedStorage").Remotes.UpStats:FireServer(unpack(args))
    
 
 a5:Button("Starter Island", function()
-  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1016.97601, 500, -532.59198, 0, 0, 1, 0, 1, -0, -1, 0, 0)
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1016.97601, 500, -532.59198, 0, 0, 1, 0, 1, -0, -1, 0, 0)
 end)
 
 a5:Button("Orange Island", function()
@@ -4679,6 +4679,19 @@ end
 end
 end
 end)
+
+a6:ToggleDesc("Auto Exchange(hold Item)","",nil,function(t)
+  _G.ex = t
+while _G.ex do wait()
+for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
+if v.ClassName == "ProximityPrompt" then
+fireproximityprompt(v,30)
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-2450.73901, 197.830719, -1298.68152, 0, 0, 1, 0, 1, -0, -1, 0, 0)
+end
+end
+end
+end)
+
 
 a6:Button("Katana", function()
 for i,v in pairs(game:GetService("Workspace").Shop.Katana:GetChildren()) do
