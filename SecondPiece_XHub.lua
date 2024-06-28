@@ -4598,60 +4598,62 @@ game:GetService("ReplicatedStorage").Remotes.UpStats:FireServer(unpack(args))
    
 
 a5:Button("Starter Island", function()
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-898.974243, 34.5999947, -559.051453, 0.0182777327, 3.36339987e-08, -0.999832928, -6.71313103e-08, 1, 3.24124017e-08, 0.999832928, 6.65276758e-08, 0.0182777327)
-
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1016.97601, 500, -532.59198, 0, 0, 1, 0, 1, -0, -1, 0, 0)
 end)
 
 a5:Button("Orange Island", function()
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(74.4107437, 36.9179535, 79.3588791, -0.999664903, 3.31894299e-08, -0.0258848667, 3.20130162e-08, 1, 4.58622864e-08, 0.0258848667, 4.50182682e-08, -0.999664903)
-
-end)
-
-a5:Button("Shell Town", function()
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(838.86554, 34.9085999, 1084.17712, -0.999843359, -0.000204709082, 0.0176962297, -4.12844514e-09, 0.999933124, 0.0115669426, -0.0176974125, 0.0115651311, -0.999776483)
-
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(28.7169991, 500, 14.04, 0, 0, 1, 0, 1, -0, -1, 0, 0)
 end)
 
 a5:Button("Ape Realm", function()
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(735.348877, 42.3243103, -1181.01147, -0.0751134604, -5.73425822e-08, -0.997174978, -4.65505181e-08, 1, -5.39985585e-08, 0.997174978, 4.23629949e-08, -0.0751134604)
-
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(734.362, 500, -1353.03296, 0, 0, 1, 0, 1, -0, -1, 0, 0)
 end)
 
-
 a5:Button("Frost Isle", function()
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1690.80603, 37.1273041, -136.344711, -0.0490881912, 0.0121994633, -0.998719931, -6.38758948e-08, 0.999925375, 0.0122141913, 0.998794436, 0.000599636347, -0.0490845293)
-
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1935.745, 500, -256.648987, 0, 0, 1, 0, 1, -0, -1, 0, 0)
 end)
 
 a5:Button("Chxmei Island", function()
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(497.929443, 34.5998955, -3094.66699, -0.0192264654, -5.09017362e-08, 0.999815166, -8.70739143e-08, 1, 4.92367143e-08, -0.999815166, -8.61111715e-08, -0.0192264654)
-
-end)
-
-a5:Button("Arena Island", function()
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1748.12256, 38.3027344, -2731.5647, -0.999986649, -4.07616874e-09, 0.00517317979, -4.20341095e-09, 1, -2.45856029e-08, -0.00517317979, -2.46070186e-08, -0.999986649)
-
-end)
-
-a5:Button("Niflheim Island", function()
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2019.97729, 118.110451, -2310.68457, -0.999597907, 0, -0.0283546709, 0, 0.99999994, -0, 0.0283546709, -0, -0.999597907)
-
-end)
-
-a5:Button("Autumnal Island", function()
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1864.88025, 50.2648354, 44.572113, 0.0335859843, -1.23333841e-08, -0.999435842, -7.68625199e-08, 1, -1.4923307e-08, 0.999435842, 7.73203723e-08, 0.0335859843)
-
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(436.302002, 500, -3077.979, 0, 0, 1, 0, 1, -0, -1, 0, 0)
 end)
 
 a5:Button("Forgotten Island", function()
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-695.397583, 44.025898, -2004.11902, 0.999338925, -4.83633311e-09, 0.0363560542, 8.25968627e-09, 1, -9.40116536e-08, -0.0363560542, 9.4249792e-08, 0.999338925)
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-760.382019, 500, -1942.92004, 0, 0, 1, 0, 1, -0, -1, 0, 0)
+end)
 
+a5:Button("Shell Town", function()
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(952.718994, 500, 1390.98206, 0, 0, 1, 0, 1, -0, -1, 0, 0)
 end)
 
 a5:Button("Cursed Isle", function()
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-2202.87866, 40.262989, -1229.82825, -0.999984086, 1.32150572e-05, -0.00564281736, 6.1271102e-08, 0.999997258, 0.00233106106, 0.00564283272, 0.0023310238, -0.999981344)
-
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-2464.03394, 500, -1283.10901, 0, 0, 1, 0, 1, -0, -1, 0, 0)
 end)
+
+a5:Button("Niflheim Island", function()
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2177.22876, 500, -2314.80005, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+end)
+
+a5:Button("Arena", function()
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1889.92896, 500, -2990.57202, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+end)
+
+a5:Button("Mango Island", function()
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-924.830017, 1000, 1068.87903, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+end)
+
+a5:Button("Shine Island", function()
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-330.661987, 500, 2059.53711, 0, 0, 1, 0, 1, -0, -1, 0, 0)
+end)
+
+a5:Button("Warrior's Retreat", function()
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-583.635986, 500, -4146.86279, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+end)
+
+a5:Button("Autumnal Archipelago", function()
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1851.05896, 500, 353.768005, -1, 0, 0, 0, 1, 0, 0, 0, -1)
+end)
+
+
 
    
 a6:ToggleDesc("Auto Random fruit Gem","",nil,function(t)
