@@ -4350,7 +4350,14 @@ end
    if _G.endlessfarm then
     for _,v in pairs(game:GetService("Workspace").Lives:GetDescendants()) do
       if v.Name == "Trial" 
-  or v.Name == "Aizen" and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health >= 1 then
+      or v.Name == "Sukuna [Half Power] Trial"
+      or v.Name == "Rimuru Trial"
+      or v.Name == "Sans Trial" 
+      or v.Name == "kokushibo Trial"
+      or v.Name == "Choso Trial"
+      or v.Name == "Elizabeth Trial"
+      or v.Name == "Cid Trial"
+  or v.Name == "Starrk Trial" and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health >= 1 then
    for i,v in pairs(game:GetService("Workspace").Chests:GetDescendants()) do
    if v.ClassName == "ProximityPrompt" then
    fireproximityprompt(v,30)
