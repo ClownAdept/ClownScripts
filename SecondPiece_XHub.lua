@@ -4584,7 +4584,7 @@ a3:ToggleDesc("Auto Teleport to items + pickup","",nil,function(t)
         fireproximityprompt(v,30)
 
         -- Calculate the tween time based on the distance and speed
-        local speed = getgenv().Speed or 2000 -- Default speed if not defined
+        local speed = getgenv().Speed or 3000 -- Default speed if not defined
         local distance = (v.Parent.CFrame.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
         local time = distance / speed
 
