@@ -4037,6 +4037,7 @@ getgenv().Configs = {
           for i,v in pairs(game:GetService("Workspace").Items:GetDescendants()) do
             if v.ClassName == "ProximityPrompt" then
               fireproximityprompt(v,30)
+              wait(1)
       
               -- Calculate the tween time based on the distance and speed
               local speed = getgenv().Speed or 1000 -- Default speed if not defined
