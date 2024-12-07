@@ -3996,9 +3996,22 @@ getgenv().Configs = {
   
   
   local a1 = Tap:newpage()
+  local a2 = Tap:newpage()
+  local a3 = Tap2:newpage()
+  local a4 = Tap2:newpage()
+  local a5 = Tap3:newpage()
+  local a6 = Tap3:newpage()
+  local a7 = Tap4:newpage()
+  local a8 = Tap4:newpage()
   
-  a1:Title("Main")
-
+  a1:Title("Farm")
+  a2:Title("Skill")
+  a3:Title("Player")
+  a4:Title("Stats")
+  a5:Title("Island")
+  a6:Title("Shop")
+  a7:Title("BOOST FPS")
+  a8:Title("Credit")
   
   function No()
   for i, v in ipairs(workspace.Lives:GetChildren()) do
@@ -4017,7 +4030,86 @@ getgenv().Configs = {
      end)
   end
   
-
+  MON = {
+   "Bandit",
+   "Bandit Leader",
+   "Clown Pirate",
+   "Marine",
+   "Monkey",
+   "Monkey King",
+   "Bomb Man",
+   "Sand Man",
+   "Snow Bandit",
+   "Snow Bandit Leader",
+   "Criminal"
+  }
+  
+  boss = {
+  "Rimuru",
+  "Choso",
+  "Killua",
+  "Gojo [Unleashed]",
+  "Sukuna [Half Power]",
+  "Uraume"
+  }
+  
+  function MonA()
+  if free == "Bandit" then
+  MONName = "Bandit [LV.5]"
+  elseif free == "Bandit Leader" then
+  MONName = "Bandit Leader [LV.15]"
+  elseif free == "Clown Pirate" then
+  MONName = "Clown Pirate [LV.50]"
+  elseif free == "Marine" then
+  MONName = "Marine [LV.300]"
+  elseif free == "Monkey" then
+  MONName = "Monkey [LV.750]"
+  elseif free == "Monkey King" then
+  MONName = "Monkey King [LV.1000]"
+  elseif free == "Bomb Man" then
+  MONName = "Bomb Man [LV.1500]"
+  elseif free == "Sand Man" then
+  MONName = "Sand Man [LV.2000]"
+  elseif free == "Snow Bandit" then
+  MONName = "Snow Bandit [LV.1750]"
+  elseif free == "Snow Bandit Leader" then
+  MONName = "Snow Bandit Leader [LV.2350]"
+  end
+  end
+  
+  function QuestA()
+  if free == "Bandit" then
+  CFrameQuest = CFrame.new(-953.566528, 34.5999947, -552.164612, -0.0109250434, -3.3378329e-09, -0.999940336, 1.94075778e-09, 1, -3.35923622e-09, 0.999940336, -1.97734162e-09, -0.0109250434)
+  elseif free == "Bandit Leader" then
+  CFrameQuest = CFrame.new(-1097.55042, 34.6000023, -492.550354, -0.0683717504, 2.67226739e-08, 0.997659922, 5.38579563e-08, 1, -2.30943531e-08, -0.997659922, 5.21529238e-08, -0.0683717504)
+  elseif free == "Clown Pirate" then
+  CFrameQuest = CFrame.new(-71.5784531, 36.4347496, 50.7921715, 0.00707866857, 2.668971e-08, 0.999974966, -5.85915032e-08, 1, -2.62756199e-08, -0.999974966, -5.84040372e-08, 0.00707866857)
+  elseif free == "Marine" then
+  CFrameQuest = CFrame.new(848.661377, 35.5073013, 1264.83777, -0.998497367, 5.36386899e-08, 0.0548002385, 5.90094018e-08, 1, 9.63871685e-08, -0.0548002385, 9.94760612e-08, -0.998497367)
+  elseif free == "Monkey" then
+  CFrameQuest = CFrame.new(771.192871, 42.3243141, -1220.74805, -0.996942639, 2.59707669e-08, 0.0781369284, 2.55865924e-08, 1, -5.91784355e-09, -0.0781369284, -3.90049282e-09, -0.996942639)
+  elseif free == "Monkey King" then
+  CFrameQuest = CFrame.new(727.094971, 42.2545357, -1380.22131, -0.0418852083, 2.64795439e-08, 0.999122441, -2.36735005e-08, 1, -2.74952416e-08, -0.999122441, -2.48043701e-08, -0.0418852083)
+  elseif free == "Snow Bandit" then
+  CFrameQuest = CFrame.new(1507.57898, 102.05999, -290.12558, -0.998586833, -8.202373e-09, -0.0531440228, -1.01186872e-08, 1, 3.57898209e-08, 0.0531440228, 3.62769903e-08, -0.998586833)
+  elseif free == "Bomb Man" or "Sand Man" or "Snow Bandit Leader" then
+  CFrameQuest = nil
+  end
+  end
+  
+  
+  Weapon = {}
+  for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do  
+     if v:IsA("Tool") then
+        table.insert(Weapon ,v.Name)
+     end
+  end
+  for i,v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do  
+     if v:IsA("Tool") then
+        table.insert(Weapon, v.Name)
+     end
+  end
+  
   
   a1:ToggleDesc("AntiAFK","",nil,function(t)
     _G.AntiAFKEnabled = t
@@ -4072,3 +4164,769 @@ getgenv().Configs = {
           end
         end
       end)
+
+  a1:Button("Refresh Weapon", function()
+   SelectToolWeapona:Clear()
+   for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do  
+     if v:IsA("Tool") then
+       SelectToolWeapona:Add(v.Name)
+     end
+   end
+   for i,v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do  
+     if v:IsA("Tool") then
+       SelectToolWeapona:Add(v.Name)
+     end
+   end
+  end)
+  
+  a1:Dropdown("Select Mobs",MON,function(Select)
+     free = Select
+  end)
+  
+
+  
+  a1:ToggleDesc("Auto Equip","Equip",nil,function(t)
+  _G.Equip = t 
+     while wait() do 
+          if _G.Equip then 
+            pcall(function()
+               for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+                  if v.Name == _G.SelectWeapon then 
+                      game.Players.LocalPlayer.Character.Humanoid:EquipTool(v)
+                    end 
+                 end
+             end)
+         end 
+     end 
+  end)
+  
+  function AA()
+   game:GetService'VirtualUser':CaptureController()
+  game:GetService'VirtualUser':Button1Down(Vector2.new(1280, 672))
+  end
+  
+  a1:ToggleDesc("Auto Farm","Farm",nil,function(t)
+    No()
+  _G.Farn = t
+  spawn(function()
+  while _G.Farn do wait()
+  pcall(function()
+  MonA()
+       for _,v in pairs(game:GetService("Workspace").Lives:GetChildren()) do
+  if v.Humanoid.DisplayName == MONName and v.Humanoid.Health > 0  then
+     v.HumanoidRootPart.Size = Vector3.new(10,10,10)
+     v.HumanoidRootPart.Transparency = 0.9
+     v.Humanoid.WalkSpeed = 0
+  repeat task.wait()
+  AA()
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame*CFrame.new(0,5,0)*CFrame.Angles(math.rad(-90),0,0)
+  until _G.Farn == false or v.Humanoid.Health <= 0
+  end
+  end
+  end)
+  end
+  end)
+  end)
+  
+  a1:ToggleDesc("Auto Quest","Quest",nil,function(t)
+  _G.AutoQuest = t
+  spawn(function()
+  while _G.AutoQuest do wait()
+  pcall(function()
+  QuestA()
+  if not game.Players.LocalPlayer.PlayerGui:FindFirstChild("QuestUI") then
+  repeat task.wait()
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrameQuest
+  until not _G.AutoQuest or game.Players.LocalPlayer.PlayerGui:FindFirstChild("QuestUI")
+  end
+  end)
+  end
+  end)
+  
+  spawn(function()
+  while _G.AutoQuest do wait()
+  pcall(function()
+  for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
+  if v.Name == "ProximityPrompt" then
+  fireproximityprompt(v,30)
+  end
+  end
+  end)
+  end
+  end)
+  end)
+  
+  a1:ToggleDesc("Auto Gem","Farm",nil,function(t)
+    No()
+  _G.op = t
+  
+  
+  function A()
+   game:GetService'VirtualUser':CaptureController()
+  game:GetService'VirtualUser':Button1Down(Vector2.new(1280, 672))
+  for i,v in pairs(game:GetService("Workspace").Chests:GetDescendants()) do
+    if v.ClassName == "ProximityPrompt" then
+    fireproximityprompt(v,30)
+    game.Players.LocalPlayer.Character.HumanoidRootPart .CFrame = v.Parent.CFrame
+    end
+  end
+  end
+  
+  
+  spawn(function()
+        while wait() do 
+    pcall(function()
+     if _G.op then
+      for _,v in pairs(game:GetService("Workspace").Lives:GetDescendants()) do
+        if v.Name == "Ichigo" 
+    or v.Name == "Gilgamesh"
+    or v.Name == "[Demon] Chxmei"
+    or v.Name == "Frieren"
+    or v.Name == "Tatsumaki"
+    or v.Name == "Shadow"
+    or v.Name == "Natsu"
+    or v.Name == "Gojo"
+    or v.Name == "Kashimo" 
+    or v.Name == "Sukuna" 
+    or v.Name == "Artoria"
+    or v.Name == "Killua"
+    or v.Name == "Rimuru"
+    or v.Name == "Gojo [Unleashed]"
+    or v.Name == "Sukuna [Half Power]"
+    or v.Name == "Uraume"
+    or v.Name == "Shank"
+    or v.Name == "Snow Bandit Leader" 
+    or v.Name == "Monkey King"
+    or v.Name == "Sand Man"
+    or v.Name == "Bomb Man"
+    or v.Name == "Bandit Leader" and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health >= 1 then
+     for i,v in pairs(game:GetService("Workspace").Chests:GetDescendants()) do
+     if v.ClassName == "ProximityPrompt" then
+     fireproximityprompt(v,30)
+     game.Players.LocalPlayer.Character.HumanoidRootPart .CFrame = v.Parent.CFrame
+     end
+   end
+  repeat task.wait(0.1)
+  A()
+    v.HumanoidRootPart.Size = Vector3.new(10,10,10)
+    v.HumanoidRootPart.Transparency = 0.9
+    v.Humanoid.WalkSpeed = 0
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame*CFrame.new(0,0,5)*CFrame.Angles(math.rad(0),0,0)
+   until _G.op == false or v.Humanoid.Health <= 0
+          end
+         end
+       end
+     end)
+    end
+  end)
+  end)
+  
+  
+    a1:ToggleDesc("Auto Bounty Quest","Farm",nil,function(t)
+      No()
+   _G.bq = t
+   _G.AutobQuest = t
+   _G.Grabquest = t
+  
+  function agq()
+    game:GetService'VirtualUser':CaptureController()
+    game:GetService'VirtualUser':Button1Down(Vector2.new(1280, 672))
+    for i,v in pairs(game:GetService("Workspace").NPC.Kuru:GetDescendants()) do
+    if v.ClassName == "ProximityPrompt" then
+    fireproximityprompt(v,30)
+  end
+  end
+  end
+  
+   function A()
+    game:GetService'VirtualUser':CaptureController()
+    game:GetService'VirtualUser':Button1Down(Vector2.new(1280, 672))
+    for i,v in pairs(game:GetService("Workspace").Chests:GetDescendants()) do
+    if v.ClassName == "ProximityPrompt" then
+    fireproximityprompt(v,30)
+    game.Players.LocalPlayer.Character.HumanoidRootPart .CFrame = v.Parent.CFrame
+  end
+  end
+  end
+    spawn(function()
+      while _G.AutobQuest do wait()
+      pcall(function()
+      if not game.Workspace.Lives:FindFirstChild("Criminal") then
+      repeat task.wait()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-911.711487, 41.7252045, 1114.65466, 0.9993909, 0.00116581446, -0.0348785296, 1.34973668e-08, 0.999441862, 0.0334067158, 0.0348980092, -0.0333863683, 0.99883312)
+        agq()
+        wait()
+      until _G.AutobQuest == false or game.Workspace.Lives:FindFirstChild("Criminal")
+      end
+      end)
+      end
+      end)
+   
+   spawn(function()
+          while wait() do 
+      pcall(function()
+       if _G.bq then
+        for _,v in pairs(game:GetService("Workspace").Lives:GetDescendants()) do
+          if v.Name == "Criminal" and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health >= 1 then
+       for i,v in pairs(game:GetService("Workspace").Chests:GetDescendants()) do
+       if v.ClassName == "ProximityPrompt" then
+       fireproximityprompt(v,30)
+       game.Players.LocalPlayer.Character.HumanoidRootPart .CFrame = v.Parent.CFrame
+       end
+     end
+    repeat task.wait()
+    A()
+      v.HumanoidRootPart.Size = Vector3.new(10,10,10)
+      v.HumanoidRootPart.Transparency = 0.9
+      v.Humanoid.WalkSpeed = 0
+     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame*CFrame.new(0,5,0)*CFrame.Angles(math.rad(-90),0,0)
+     until _G.bq == false or v.Humanoid.Health <= 0
+            end
+           end
+         end
+       end)
+      end
+   end)
+   end)
+  
+  
+  
+   a1:ToggleDesc("Auto Endless","Farm",nil,function(t)
+    No()
+    _G.endlessfarm = t
+  
+    spawn(function()
+        while wait() do 
+    pcall(function()
+     if _G.endlessfarm then
+      for _,v in pairs(game:GetService("Workspace").Lives:GetDescendants()) do
+        if v.Name == "Trial" 
+        or v.Name == "Sukuna [Half Power] Trial"
+        or v.Name == "Rimuru Trial"
+        or v.Name == "Sans Trial" 
+        or v.Name == "kokushibo Trial"
+        or v.Name == "Choso Trial"
+        or v.Name == "Elizabeth Trial"
+        or v.Name == "Cid Trial"
+    or v.Name == "Starrk Trial" and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health >= 1 then
+     for i,v in pairs(game:GetService("Workspace").Chests:GetDescendants()) do
+     if v.ClassName == "ProximityPrompt" then
+     fireproximityprompt(v,30)
+     game.Players.LocalPlayer.Character.HumanoidRootPart .CFrame = v.Parent.CFrame
+     end
+   end
+  repeat task.wait()
+    v.HumanoidRootPart.Size = Vector3.new(10,10,10)
+    v.HumanoidRootPart.Transparency = 0.9
+    v.Humanoid.WalkSpeed = 0
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame*CFrame.new(0,5,0)*CFrame.Angles(math.rad(-90),0,0)
+   until _G.endlessfarm == false or v.Humanoid.Health <= 0
+          end
+         end
+       end
+     end)
+    end
+  end)
+  
+  
+  
+  end)
+  
+  
+  a2:ToggleDesc("Left Clicker","",nil,function(t)
+    _G.fz = t 
+    while _G.fz do wait() 
+       pcall(function()
+        game:GetService'VirtualUser':CaptureController()
+        game:GetService'VirtualUser':Button1Down(Vector2.new(1280, 672))
+          end)
+       end
+    end)  
+  
+  a2:ToggleDesc("Skill Z","",nil,function(t)
+  _G.z = t 
+  while _G.z do wait() 
+     pcall(function()
+  game:service('VirtualInputManager'):SendKeyEvent(true, "Z", false, game)
+        end)
+     end
+  end)
+  
+  a2:ToggleDesc("Skill X","",nil,function(t)
+  _G.x = t 
+  while _G.x do wait() 
+     pcall(function()
+  game:service('VirtualInputManager'):SendKeyEvent(true, "X", false, game)
+        end)
+     end
+  end)
+  
+  a2:ToggleDesc("Skill C","",nil,function(t)
+  _G.c = t 
+  while _G.c do wait() 
+     pcall(function()
+  game:service('VirtualInputManager'):SendKeyEvent(true, "C", false, game)
+        end)
+     end
+  end)
+  
+  a2:ToggleDesc("Skill V","",nil,function(t)
+  _G.v = t 
+  while _G.v do wait() 
+     pcall(function()
+  game:service('VirtualInputManager'):SendKeyEvent(true, "V", false, game)
+        end)
+     end
+  end)
+  
+  a2:ToggleDesc("Skill F","",nil,function(t)
+  _G.f = t 
+  while _G.f do wait() 
+     pcall(function()
+  game:service('VirtualInputManager'):SendKeyEvent(true, "F", false, game)
+        end)
+     end
+  end)
+  
+  
+  Playerslist = {}
+     
+     for i,v in pairs(game:GetService("Players"):GetChildren()) do
+         table.insert(Playerslist,v.Name)
+     end
+     
+  local SelectedPly = a3:Dropdown("Select Player",Playerslist,function(Select)
+     _G.SelectPly = Select
+  end)
+  
+  a3:Button("Refresh Player", function()
+         SelectedPly:Clear()
+         for i,v in pairs(game:GetService("Players"):GetChildren()) do  
+             SelectedPly:Add(v.Name)
+         end
+  end)
+  
+  a3:Button("Teleport", function()
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players[_G.SelectPly].Character.HumanoidRootPart.CFrame * CFrame.new(0,0,4)
+  end)
+  
+  a3:ToggleDesc("Spectate Player","Spectate",nil,function(t)
+  SpectatePlys = t
+         local plr1 = game:GetService("Players").LocalPlayer.Character.Humanoid
+         local plr2 = game:GetService("Players"):FindFirstChild(_G.SelectPly)
+         repeat wait(.1)
+             game:GetService("Workspace").Camera.CameraSubject = game:GetService("Players"):FindFirstChild(_G.SelectPly).Character.Humanoid
+         until SpectatePlys == false 
+         game:GetService("Workspace").Camera.CameraSubject = game:GetService("Players").LocalPlayer.Character.Humanoid
+  end)
+  
+  a3:ToggleDesc("Auto Teleport","",nil,function(t)
+         _G.TeleportPly = t
+         pcall(function()
+             if _G.TeleportPly then
+                 repeat game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Players")[_G.SelectPly].Character.HumanoidRootPart.CFrame * CFrame.new(0,0,3) wait() until _G.TeleportPly == false
+             end
+         end)
+  end)
+  
+  a3:Button("ESP", function()
+  local FillColor = Color3.fromRGB(175,25,255)
+  local DepthMode = "AlwaysOnTop"
+  local FillTransparency = 0.5
+  local OutlineColor = Color3.fromRGB(255,255,255)
+  local OutlineTransparency = 0.7
+  
+  local CoreGui = game:FindService("CoreGui")
+  local Players = game:FindService("Players")
+  local lp = Players.LocalPlayer
+  local connections = {}
+  
+  local Storage = Instance.new("Folder")
+  Storage.Parent = CoreGui
+  Storage.Name = "Highlight_Storage"
+  
+  local function Highlight(plr)
+     local Highlight = Instance.new("Highlight")
+     Highlight.Name = plr.Name
+     Highlight.FillColor = FillColor
+     Highlight.DepthMode = DepthMode
+     Highlight.FillTransparency = FillTransparency
+     Highlight.OutlineColor = OutlineColor
+     Highlight.OutlineTransparency = 0.7
+     Highlight.Parent = Storage
+     
+     local plrchar = plr.Character
+     if plrchar then
+         Highlight.Adornee = plrchar
+     end
+  
+     connections[plr] = plr.CharacterAdded:Connect(function(char)
+         Highlight.Adornee = char
+       end)
+  end
+  
+  Players.PlayerAdded:Connect(Highlight)
+  for i,v in next, Players:GetPlayers() do
+     Highlight(v)
+  end
+  
+  Players.PlayerRemoving:Connect(function(plr)
+     local plrname = plr.Name
+     if Storage[plrname] then
+         Storage[plrname]:Destroy()
+     end
+     if connections[plr] then
+         connections[plr]:Disconnect()
+             end
+       end)
+  end)
+  
+  a3:ToggleDesc("Hit Box","",nil,function(t)
+      _G.HeadSize = 30
+     _G.Disabled = t
+  game:GetService('RunService').RenderStepped:connect(function()
+         if _G.Disabled then
+             for i,v in next, game:GetService('Players'):GetPlayers() do
+                 if v.Name ~= game:GetService('Players').LocalPlayer.Name then
+                     pcall(function()
+                         v.Character.HumanoidRootPart.Size = Vector3.new(_G.HeadSize,_G.HeadSize,_G.HeadSize)
+                         v.Character.HumanoidRootPart.Transparency = 0.8
+                         v.Character.HumanoidRootPart.BrickColor = BrickColor.new("Really black")
+                         v.Character.HumanoidRootPart.Material = "Neon"
+                         v.Character.HumanoidRootPart.CanCollide = false
+                               end)
+                         end
+                      end
+             end
+       end)
+  end)
+  
+  a3:ToggleDesc("Auto Teleport to Item","",nil,function(k)
+  _G.F = k
+  while _G.F do wait()
+  pcall(function()
+  for i,v in pairs(game:GetService("Workspace").ItemDrop:GetDescendants()) do
+  if v.Name == "TouchInterest" then
+  game.Players.LocalPlayer.Character.HumanoidRootPart .CFrame = v.Parent.CFrame
+  wait()
+             end
+          end
+       end)
+  end
+  end)
+  
+  a3:ToggleDesc("Auto Teleport to Chests","",nil,function(t)
+  _G.Fd = t
+  while _G.Fd do wait()
+  for i,v in pairs(game:GetService("Workspace").Chests:GetDescendants()) do
+  if v.ClassName == "ProximityPrompt" then
+  fireproximityprompt(v,30)
+  game.Players.LocalPlayer.Character.HumanoidRootPart .CFrame = v.Parent.CFrame
+  end
+       end
+             end
+  end)
+  
+  a3:ToggleDesc("Auto Teleport to items + pickup","",nil,function(t)
+    _G.tpi = t
+    while _G.tpi do wait()
+      for i,v in pairs(game:GetService("Workspace").Items:GetDescendants()) do
+        if v.ClassName == "ProximityPrompt" then
+          fireproximityprompt(v,30)
+  
+          -- Calculate the tween time based on the distance and speed
+          local speed = getgenv().Speed or 2000 -- Default speed if not defined
+          local distance = (v.Parent.CFrame.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+          local time = distance / speed
+  
+          -- Create the tween
+          local tweenService = game:GetService("TweenService")
+          local tweenInfo = TweenInfo.new(
+            time, -- Time in seconds for the tween to complete
+            Enum.EasingStyle.Linear, -- Easing style (linear movement)
+            Enum.EasingDirection.InOut, -- Easing direction (smooth in and out)
+            0, -- Repetition count
+            false, -- Reverse the tween after completion
+            0 -- Delay before the tween starts
+          )
+          local goal = {
+            CFrame = v.Parent.CFrame
+          }
+          local tween = tweenService:Create(
+            game.Players.LocalPlayer.Character.HumanoidRootPart,
+            tweenInfo,
+            goal
+          )
+          tween:Play()
+  
+          -- Wait for the tween to finish before moving to the next item
+          wait(time)
+  
+          -- Break out of the loop to start from the beginning
+          break
+        end
+      end
+    end
+  end)
+  
+  
+  
+  a3:ToggleDesc("Auto Teleport to Traveling merchant","",nil,function(t)
+  _G.Fd = t
+  while _G.Fd do wait()
+  pcall(function()
+  for i,v in pairs(game:GetService("Workspace").NPC["Traveling merchant"]:GetDescendants()) do
+  if v.ClassName == "ProximityPrompt" then
+  repeat task.wait()
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Parent.CFrame * CFrame.new(0,0,-3)
+  until _G.Fd == false
+  end
+  end
+  end)
+       end
+  end)
+  
+  
+  
+  a4:ToggleDesc("Melee","",nil,function(t)
+  _G.me = t 
+  while _G.me do wait() 
+     pcall(function()
+     local args = {
+     [1] = "Melee",
+     [2] = 1
+  }
+  game:GetService("ReplicatedStorage").Remotes.UpStats:FireServer(unpack(args))
+     end)
+     end
+     end)
+     
+     a4:ToggleDesc("Sword","",nil,function(t)
+  _G.sh = t 
+  while _G.sh do wait() 
+     pcall(function()
+     local args = {
+     [1] = "Weapon",
+     [2] = 1
+  }
+  game:GetService("ReplicatedStorage").Remotes.UpStats:FireServer(unpack(args))
+     end)
+     end
+     end)
+     
+     a4:ToggleDesc("Defense","",nil,function(t)
+  _G.de = t 
+  while _G.de do wait() 
+     pcall(function()
+     local args = {
+     [1] = "Defense",
+     [2] = 1
+  }
+  game:GetService("ReplicatedStorage").Remotes.UpStats:FireServer(unpack(args))
+     end)
+     end
+     end)
+     
+     a4:ToggleDesc("Fruit","",nil,function(t)
+  _G.fe = t 
+  while _G.fe do wait() 
+     pcall(function()
+     local args = {
+     [1] = "DemonFruit",
+     [2] = 1
+  }
+  game:GetService("ReplicatedStorage").Remotes.UpStats:FireServer(unpack(args))
+     end)
+     end
+     end)
+     
+     
+  
+  a5:Button("Starter Island", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1016.97601, 500, -532.59198, 0, 0, 1, 0, 1, -0, -1, 0, 0)
+  end)
+  
+  a5:Button("Orange Island", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(28.7169991, 500, 14.04, 0, 0, 1, 0, 1, -0, -1, 0, 0)
+  end)
+  
+  a5:Button("Ape Realm", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(734.362, 500, -1353.03296, 0, 0, 1, 0, 1, -0, -1, 0, 0)
+  end)
+  
+  a5:Button("Frost Isle", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1935.745, 500, -256.648987, 0, 0, 1, 0, 1, -0, -1, 0, 0)
+  end)
+  
+  a5:Button("Chxmei Island", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(436.302002, 500, -3077.979, 0, 0, 1, 0, 1, -0, -1, 0, 0)
+  end)
+  
+  a5:Button("Forgotten Island", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-760.382019, 500, -1942.92004, 0, 0, 1, 0, 1, -0, -1, 0, 0)
+  end)
+  
+  a5:Button("Shell Town", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(952.718994, 500, 1390.98206, 0, 0, 1, 0, 1, -0, -1, 0, 0)
+  end)
+  
+  a5:Button("Cursed Isle", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-2464.03394, 500, -1283.10901, 0, 0, 1, 0, 1, -0, -1, 0, 0)
+  end)
+  
+  a5:Button("Niflheim Island", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2177.22876, 500, -2314.80005, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+  end)
+  
+  a5:Button("Arena", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1889.92896, 500, -2990.57202, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+  end)
+  
+  a5:Button("Mango Island", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-924.830017, 1000, 1068.87903, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+  end)
+  
+  a5:Button("Shine Island", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-330.661987, 500, 2059.53711, 0, 0, 1, 0, 1, -0, -1, 0, 0)
+  end)
+  
+  a5:Button("Warrior's Retreat", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-583.635986, 500, -4146.86279, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+  end)
+  
+  a5:Button("Autumnal Archipelago", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1851.05896, 500, 353.768005, -1, 0, 0, 0, 1, 0, 0, 0, -1)
+  end)
+  
+  
+  
+     
+  a6:ToggleDesc("Auto Random fruit Gem","",nil,function(t)
+     _G.gg = t
+  while _G.gg do wait()
+  for i,v in pairs(game:GetService("Workspace").NPC.Beatrice:GetDescendants()) do
+  if v.ClassName == "ProximityPrompt" then
+  fireproximityprompt(v,30)
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-677.699585, 40.9749565, -1811.07788, -0.791487336, 0.0638560653, 0.607840598, 0, 0.994527102, -0.104479022, -0.611185551, -0.0826938227, -0.787155628)
+  end
+  end
+  end
+  end)
+     
+  a6:ToggleDesc("Auto Random fruit Beli","",nil,function(t)
+     _G.xm = t
+  while _G.xm do wait()
+  for i,v in pairs(game:GetService("Workspace").NPC.Beatrice:GetDescendants()) do
+  if v.ClassName == "ProximityPrompt" then
+  fireproximityprompt(v,30)
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(949.346313, 63.0444031, 1328.21484, 1, 0, 0, 0, 0.994527102, -0.104479022, 0, 0.104479022, 0.994527102)
+  end
+  end
+  end
+  end)
+  
+  a6:ToggleDesc("Auto Exchange(hold Item)","",nil,function(t)
+    _G.ex = t
+  while _G.ex do wait()
+  for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
+  if v.ClassName == "ProximityPrompt" then
+  fireproximityprompt(v,30)
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-2450.73901, 197.830719, -1298.68152, 0, 0, 1, 0, 1, -0, -1, 0, 0)
+  end
+  end
+  endFf
+  end)
+  
+  a6:Button("Remove Fruit from lnventory", function()
+  for i,v in pairs(game:GetService("Workspace").Shop.Garbage:GetChildren()) do
+  if v.ClassName == "ProximityPrompt" then
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Parent.CFrame * CFrame.new(3,1,0)
+  end
+       end
+  end)
+  
+  
+  a7:ToggleDesc("AntiAFK","",nil,function(t)
+  _G.AntiAFKEnabled = t
+     local vu = game:GetService("VirtualUser")
+     game.Players.LocalPlayer.Idled:connect(function()
+         if _G.AntiAFKEnabled then
+             vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+             wait(1)
+             vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+             end
+       end)
+  end)
+  
+  a7:ToggleDesc("White Screen","",nil,function(t)
+  _G.WhiteScreen = t
+     while wait(0.1) do
+         game:GetService("RunService"):Set3dRenderingEnabled(not _G.WhiteScreen)
+       end
+  end)
+  
+  
+  a7:Button("Boost FPS", function()
+  local decalsyeeted = true
+     local g, w, l = game, game.Workspace, game.Lighting
+     local t = w.Terrain
+     sethiddenproperty(l, "Technology", 2)
+     sethiddenproperty(t, "Decoration", false)
+     t.WaterWaveSize, t.WaterWaveSpeed, t.WaterReflectance, t.WaterTransparency = 0, 0, 0, 0
+     l.GlobalShadows, l.FogEnd, l.Brightness = false, 9e9, 0
+     settings().Rendering.QualityLevel = "Level01"
+  
+     local function handleDescendant(v)
+         if v:IsA("Accessory") or v:IsA("Shirt") or v:IsA("Pants") or v:IsA("ShirtGraphic") then
+             v:Remove()
+         elseif v:IsA("BasePart") and not v:IsA("MeshPart") then
+             v.Material, v.Reflectance = "Plastic", 0
+         elseif (v:IsA("Decal") or v:IsA("Texture")) and decalsyeeted then
+             v.Transparency = 1
+         elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then
+             v.Lifetime = NumberRange.new(0)
+         elseif v:IsA("Explosion") then
+             v.BlastPressure, v.BlastRadius = 1, 1
+         elseif (v:IsA("Fire") or v:IsA("SpotLight") or v:IsA("Smoke") or v:IsA("Sparkles")) then
+             v.Enabled = false
+         elseif v:IsA("MeshPart") and decalsyeeted then
+             v.Material, v.Reflectance, v.TextureID = "Plastic", 0, 10385902758728957
+         elseif v:IsA("SpecialMesh") and decalsyeeted then
+             v.TextureId = 0
+        end
+  end
+  
+     for _, v in pairs(w:GetDescendants()) do
+         handleDescendant(v)
+     end
+  
+     w.DescendantAdded:Connect(function(v)
+         wait()
+         handleDescendant(v)
+     end)
+  
+     for _, e in ipairs(l:GetChildren()) do
+         if e:IsA("BlurEffect") or e:IsA("SunRaysEffect") or e:IsA("ColorCorrectionEffect") or e:IsA("BloomEffect") or e:IsA("DepthOfFieldEffect") then
+             e.Enabled = false
+             end
+       end
+  end)
+  
+  a7:Button("Unlock FPS", function()
+  loadstring(game:HttpGet("https://pastebin.com/raw/y5reZYnG", true))()
+  end)
+  
+  a7:Button("Rejoin Server", function()
+    local ts = game:GetService("TeleportService")
+  
+    local p = game:GetService("Players").LocalPlayer
+  
+  
+  
+    ts:TeleportToPlaceInstance(game.PlaceId, game.JobId, p)
+  end)
+  
+  a7:Button("Server Hop", function()
+    local Http = game:GetService("HttpService") local TPS = game:GetService("TeleportService") local Api = "https://games.roblox.com/v1/games/" local _place = game.PlaceId local _servers = Api.._place.."/servers/Public?sortOrder=Asc&limit=100" function ListServers(cursor) local Raw = game:HttpGet(_servers .. ((cursor and "&cursor="..cursor) or "")) return Http:JSONDecode(Raw) end local Server, Next; repeat local Servers = ListServers(Next) Server = Servers.data[1] Next = Servers.nextPageCursor until Server TPS:TeleportToPlaceInstance(_place,Server.id,game.Players.LocalPlayer)
+    end)
+  end)
