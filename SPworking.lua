@@ -4216,7 +4216,11 @@ game:GetService'VirtualUser':Button1Down(Vector2.new(1280, 672))
 for i,v in pairs(game:GetService("Workspace").Chests:GetDescendants()) do
   if v.ClassName == "ProximityPrompt" then
   fireproximityprompt(v,30)
-  game.Players.LocalPlayer.Character.HumanoidRootPart .CFrame = v.Parent.CFrame
+  -- Tween to the chest
+  local Time = (v.Parent.CFrame.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude / 1000 -- Adjust the speed as needed
+  local Info = TweenInfo.new(Time, Enum.EasingStyle.Linear)
+  local Tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, Info, {CFrame = v.Parent.CFrame})
+  Tween:Play()
   end
 end
 end
@@ -4252,7 +4256,11 @@ spawn(function()
    for i,v in pairs(game:GetService("Workspace").Chests:GetDescendants()) do
    if v.ClassName == "ProximityPrompt" then
    fireproximityprompt(v,30)
-   game.Players.LocalPlayer.Character.HumanoidRootPart .CFrame = v.Parent.CFrame
+   -- Tween to the chest
+   local Time = (v.Parent.CFrame.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude / 1000 -- Adjust the speed as needed
+  local Info = TweenInfo.new(Time, Enum.EasingStyle.Linear)
+  local Tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, Info, {CFrame = v.Parent.CFrame})
+  Tween:Play()
    end
  end
 repeat task.wait(0.1)
@@ -4260,7 +4268,11 @@ A()
   v.HumanoidRootPart.Size = Vector3.new(10,10,10)
   v.HumanoidRootPart.Transparency = 0.9
   v.Humanoid.WalkSpeed = 0
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame*CFrame.new(0,0,5)*CFrame.Angles(math.rad(0),0,0)
+  -- Tween to a position above the boss
+  local Time = (v.HumanoidRootPart.CFrame * CFrame.new(0,0,5) * CFrame.Angles(math.rad(0),0,0)).Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude / 1000 -- Adjust the speed as needed
+  local Info = TweenInfo.new(Time, Enum.EasingStyle.Linear)
+  local Tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, Info, {CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,0,5) * CFrame.Angles(math.rad(0),0,0)})
+  Tween:Play()
  until _G.op == false or v.Humanoid.Health <= 0
         end
        end
@@ -4269,6 +4281,7 @@ game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.
   end
 end)
 end)
+
 
 
   a1:ToggleDesc("Auto Bounty Quest","Farm",nil,function(t)
