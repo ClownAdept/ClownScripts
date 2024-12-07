@@ -4598,61 +4598,198 @@ game:GetService("ReplicatedStorage").Remotes.UpStats:FireServer(unpack(args))
    
    
 
-a5:Button("Starter Island", function()
-  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1016.97601, 500, -532.59198, 0, 0, 1, 0, 1, -0, -1, 0, 0)
-end)
-
-a5:Button("Orange Island", function()
-  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(28.7169991, 500, 14.04, 0, 0, 1, 0, 1, -0, -1, 0, 0)
-end)
-
-a5:Button("Ape Realm", function()
-  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(734.362, 500, -1353.03296, 0, 0, 1, 0, 1, -0, -1, 0, 0)
-end)
-
-a5:Button("Frost Isle", function()
-  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1935.745, 500, -256.648987, 0, 0, 1, 0, 1, -0, -1, 0, 0)
-end)
-
-a5:Button("Chxmei Island", function()
-  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(436.302002, 500, -3077.979, 0, 0, 1, 0, 1, -0, -1, 0, 0)
-end)
-
-a5:Button("Forgotten Island", function()
-  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-760.382019, 500, -1942.92004, 0, 0, 1, 0, 1, -0, -1, 0, 0)
-end)
-
-a5:Button("Shell Town", function()
-  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(952.718994, 500, 1390.98206, 0, 0, 1, 0, 1, -0, -1, 0, 0)
-end)
-
-a5:Button("Cursed Isle", function()
-  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-2464.03394, 500, -1283.10901, 0, 0, 1, 0, 1, -0, -1, 0, 0)
-end)
-
-a5:Button("Niflheim Island", function()
-  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2177.22876, 500, -2314.80005, 1, 0, 0, 0, 1, 0, 0, 0, 1)
-end)
-
-a5:Button("Arena", function()
-  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1889.92896, 500, -2990.57202, 1, 0, 0, 0, 1, 0, 0, 0, 1)
-end)
-
-a5:Button("Mango Island", function()
-  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-924.830017, 1000, 1068.87903, 1, 0, 0, 0, 1, 0, 0, 0, 1)
-end)
-
-a5:Button("Shine Island", function()
-  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-330.661987, 500, 2059.53711, 0, 0, 1, 0, 1, -0, -1, 0, 0)
+a5:Button("Dawn Island", function()
+  getgenv().Speed = 1000
+  local Time =
+    (Vector3.new(0, 51, 0) - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude / getgenv().Speed
+  local Info = TweenInfo.new(Time, Enum.EasingStyle.Linear)
+  local Tween =
+    game:GetService("TweenService"):Create(
+    game.Players.LocalPlayer.Character.HumanoidRootPart,
+    Info,
+    {CFrame = CFrame.new(Vector3.new(0, 51, 0))}
+  )
+  Tween:Play()
 end)
 
 a5:Button("Warrior's Retreat", function()
-  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-583.635986, 500, -4146.86279, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+  getgenv().Speed = 1000
+  local Time =
+    (Vector3.new(2306, 61, 2201) - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude / getgenv().Speed
+  local Info = TweenInfo.new(Time, Enum.EasingStyle.Linear)
+  local Tween =
+    game:GetService("TweenService"):Create(
+    game.Players.LocalPlayer.Character.HumanoidRootPart,
+    Info,
+    {CFrame = CFrame.new(Vector3.new(2306, 61, 2201))}
+  )
+  Tween:Play()
 end)
 
-a5:Button("Autumnal Archipelago", function()
-  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1851.05896, 500, 353.768005, -1, 0, 0, 0, 1, 0, 0, 0, -1)
+a5:Button("Forgotten Isle", function()
+  getgenv().Speed = 1000
+  local Time =
+    (Vector3.new(-1179, 42, 1931) - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude / getgenv().Speed
+  local Info = TweenInfo.new(Time, Enum.EasingStyle.Linear)
+  local Tween =
+    game:GetService("TweenService"):Create(
+    game.Players.LocalPlayer.Character.HumanoidRootPart,
+    Info,
+    {CFrame = CFrame.new(Vector3.new(-1179, 42, 1931))}
+  )
+  Tween:Play()
 end)
+
+a5:Button("Ape Realm", function()  
+  getgenv().Speed = 1000
+  local Time =
+    (Vector3.new(1955, 77, -2295) - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude / getgenv().Speed
+  local Info = TweenInfo.new(Time, Enum.EasingStyle.Linear)
+  local Tween =
+    game:GetService("TweenService"):Create(
+    game.Players.LocalPlayer.Character.HumanoidRootPart,
+    Info,
+    {CFrame = CFrame.new(Vector3.new(1955, 77, -2295))}
+  )
+  Tween:Play()
+end)
+
+a5:Button("Crystal Gove", function()
+  getgenv().Speed = 1000
+  local Time =
+    (Vector3.new(741, 41, 3746) - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude / getgenv().Speed
+  local Info = TweenInfo.new(Time, Enum.EasingStyle.Linear)
+  local Tween =
+    game:GetService("TweenService"):Create(
+    game.Players.LocalPlayer.Character.HumanoidRootPart,
+    Info,
+    {CFrame = CFrame.new(Vector3.new(741, 41, 3746))}
+  )
+  Tween:Play()
+
+  end)
+
+a5:Button("Shark Island", function()
+  getgenv().Speed = 1000
+  local Time =
+    (Vector3.new(-4059, 33, -2485) - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude / getgenv().Speed
+  local Info = TweenInfo.new(Time, Enum.EasingStyle.Linear)
+  local Tween =
+    game:GetService("TweenService"):Create(
+    game.Players.LocalPlayer.Character.HumanoidRootPart,
+    Info,
+    {CFrame = CFrame.new(Vector3.new(-4059, 33, -2485))}
+  )
+  Tween:Play()
+
+  end)
+
+a5:Button("Frost Isle", function()
+  getgenv().Speed = 1000
+  local Time =
+    (Vector3.new(1254, 47, -4515) - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude / getgenv().Speed
+  local Info = TweenInfo.new(Time, Enum.EasingStyle.Linear)
+  local Tween =
+    game:GetService("TweenService"):Create(
+    game.Players.LocalPlayer.Character.HumanoidRootPart,
+    Info,
+    {CFrame = CFrame.new(Vector3.new(1254, 47, -4515))}
+  )
+  Tween:Play()
+
+  end)
+
+a5:Button("Crescent Isle", function()
+  getgenv().Speed = 1000
+  local Time =
+    (Vector3.new(-2896, 66, -11) - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude / getgenv().Speed
+  local Info = TweenInfo.new(Time, Enum.EasingStyle.Linear)
+  local Tween =
+    game:GetService("TweenService"):Create(
+    game.Players.LocalPlayer.Character.HumanoidRootPart,
+    Info,
+    {CFrame = CFrame.new(Vector3.new(-2896, 66, -11))}
+  )
+  Tween:Play()
+
+  end)
+
+a5:Button("Yggdrasil Isle", function()
+  getgenv().Speed = 1000
+  local Time =
+    (Vector3.new(-4538, 61, 1346) - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude / getgenv().Speed
+  local Info = TweenInfo.new(Time, Enum.EasingStyle.Linear)
+  local Tween =
+    game:GetService("TweenService"):Create(
+    game.Players.LocalPlayer.Character.HumanoidRootPart,
+    Info,
+    {CFrame = CFrame.new(Vector3.new(-4538, 61, 1346))}
+  )
+  Tween:Play()
+
+  end)
+
+a5:Button("Forgotten Shores", function()
+  getgenv().Speed = 1000
+  local Time =
+    (Vector3.new(-3175, 41, 4104) - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude / getgenv().Speed
+  local Info = TweenInfo.new(Time, Enum.EasingStyle.Linear)
+  local Tween =
+    game:GetService("TweenService"):Create(
+    game.Players.LocalPlayer.Character.HumanoidRootPart,
+    Info,
+    {CFrame = CFrame.new(Vector3.new(-3175, 41, 4104))}
+  )
+  Tween:Play()
+
+  end)
+
+a5:Button("Hueco Mundo", function()
+  getgenv().Speed = 1000
+  local Time =
+    (Vector3.new(-2506, 34, -5832) - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude / getgenv().Speed
+  local Info = TweenInfo.new(Time, Enum.EasingStyle.Linear)
+  local Tween =
+    game:GetService("TweenService"):Create(
+    game.Players.LocalPlayer.Character.HumanoidRootPart,
+    Info,
+    {CFrame = CFrame.new(Vector3.new(-2506, 34, -5832))}
+  )
+  Tween:Play()
+    
+  end)
+
+a5:Button("Arena", function()
+  getgenv().Speed = 1000
+  local Time =
+    (Vector3.new(-1104, 75, -3014) - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude / getgenv().Speed
+  local Info = TweenInfo.new(Time, Enum.EasingStyle.Linear)
+  local Tween =
+    game:GetService("TweenService"):Create(
+    game.Players.LocalPlayer.Character.HumanoidRootPart,
+    Info,
+    {CFrame = CFrame.new(Vector3.new(-1104, 75, -3014))}
+  )
+  Tween:Play()
+
+  end)
+
+a5:Button("Niflhelm", function()
+  getgenv().Speed = 1000
+  local Time =
+    (Vector3.new(3764, 36, 334) - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude / getgenv().Speed
+  local Info = TweenInfo.new(Time, Enum.EasingStyle.Linear)
+  local Tween =
+    game:GetService("TweenService"):Create(
+    game.Players.LocalPlayer.Character.HumanoidRootPart,
+    Info,
+    {CFrame = CFrame.new(Vector3.new(3764, 36, 334))}
+  )
+  Tween:Play()
+
+  end)
+
+
 
 
 
