@@ -4578,44 +4578,53 @@ end)
 
 a3:ToggleDesc("Auto Teleport to items + pickup","",nil,function(t)
   _G.tpi = t
-  while _G.tpi do wait()
-    for i,v in pairs(game:GetService("Workspace").Items:GetDescendants()) do
-      if v.ClassName == "ProximityPrompt" then
-        fireproximityprompt(v,30)
+  while _G.tpi do
+    wait()
+    if game.Players.LocalPlayer.Character then -- Check if the character exists
+      for i,v in pairs(game:GetService("Workspace").Items:GetDescendants()) do
+        if v.ClassName == "ProximityPrompt" then
+          fireproximityprompt(v,30)
 
-        -- Calculate the tween time based on the distance and speed
-        local speed = getgenv().Speed or 1000 -- Default speed if not defined
-        local distance = (v.Parent.CFrame.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
-        local time = distance / speed
+          -- Calculate the tween time based on the distance and speed
+          local speed = getgenv().Speed or 1000 -- Default speed if not defined
+          local distance = (v.Parent.CFrame.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+          local time = distance / speed
 
-        -- Create the tween
-        local tweenService = game:GetService("TweenService")
-        local tweenInfo = TweenInfo.new(
-          time, -- Time in seconds for the tween to complete
-          Enum.EasingStyle.Linear, -- Easing style (linear movement)
-          Enum.EasingDirection.InOut, -- Easing direction (smooth in and out)
-          0, -- Repetition count
-          false, -- Reverse the tween after completion
-          0 -- Delay before the tween starts
-        )
-        local goal = {
-          CFrame = v.Parent.CFrame
-        }
-        local tween = tweenService:Create(
-          game.Players.LocalPlayer.Character.HumanoidRootPart,
-          tweenInfo,
-          goal
-        )
-        tween:Play()
+          -- Create the tween
+          local tweenService = game:GetService("TweenService")
+          local tweenInfo = TweenInfo.new(
+            time, -- Time in seconds for the tween to complete
+            Enum.EasingStyle.Linear, -- Easing style (linear movement)
+            Enum.EasingDirection.InOut, -- Easing direction (smooth in and out)
+            0, -- Repetition count
+            false, -- Reverse the tween after completion
+            0 -- Delay before the tween starts
+          )
+          local goal = {
+            CFrame = v.Parent.CFrame
+          }
+          local tween = tweenService:Create(
+            game.Players.LocalPlayer.Character.HumanoidRootPart,
+            tweenInfo,
+            goal
+          )
+          tween:Play()
 
-        -- Wait for the tween to finish before moving to the next item
-        wait(time)
+          -- Wait for the tween to finish before moving to the next item
+          wait(time)
 
-        -- Break out of the loop to start from the beginning
-        break
+          -- Break out of the loop to start from the beginning
+          break
+        end
       end
     end
   end
+end)
+
+-- Listen for CharacterAdded event
+game.Players.LocalPlayer.CharacterAdded:Connect(function(character)
+  -- Update the script's character reference when a new one is created
+  print("New character detected!  Script will now work again.")
 end)
 
 
