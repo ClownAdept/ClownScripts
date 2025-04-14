@@ -265,21 +265,15 @@ AutofarmSection:NewToggle("Bless macro", "It literally does what the name says..
 
                 -- Check if Bless is usable
                 if blessPath and blessPath.Text == "" then
-                    -- Find a target using the priority system
-                    local targetName = findTarget()
-                    if targetName then
-                        -- Use Bless on the target
-                        local args = {
-                            [1] = "Attack",
-                            [2] = "Bless",
-                            [3] = {
-                                ["Attacking"] = workspace:WaitForChild("Living"):WaitForChild(targetName)
-                            }
+                    -- Use Bless on the player
+                    local args = {
+                        [1] = "Attack",
+                        [2] = "Bless",
+                        [3] = {
+                            ["Attacking"] = workspace:WaitForChild("Living"):WaitForChild(player.Name)
                         }
-                        game:GetService("ReplicatedStorage"):WaitForChild("PlayerTurnInput"):InvokeServer(unpack(args))
-                    else
-                        warn("No valid target found for Bless!")
-                    end
+                    }
+                    game:GetService("ReplicatedStorage"):WaitForChild("PlayerTurnInput"):InvokeServer(unpack(args))
                 else
                     -- Bless is on cooldown, use Meditate
                     local args = {
