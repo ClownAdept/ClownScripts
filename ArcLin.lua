@@ -93,6 +93,7 @@ PlayerMovement:NewToggle("Unlimited Jumps", "It litterally does what the name sa
         _G.InfiniteJumpEnabled = false
     end
 end)
+
 -------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------
@@ -180,16 +181,21 @@ local function findTarget()
     if not battle then
         return nil
     end
+
+    -- Refresh the opposing team to ensure it's up-to-date
     local opposingTeam = battle:FindFirstChild("Team2")
     if not opposingTeam then
         return nil
     end
+
+    -- Iterate through the priority list and find the first valid target
     for _, name in ipairs(priorityList) do
         local target = opposingTeam:FindFirstChild(name)
         if target then
             return target.Name
         end
     end
+
     return nil
 end
 
@@ -249,6 +255,47 @@ AutofarmSection:NewToggle("Auto Attack", "Uses attack 1 & 2 from above", functio
     end
 end)
 
+AutofarmSection:NewToggle("Bless macro", "It literally does what the name says...", function(state)
+    _G.Bless = state
+    if _G.Bless then
+        task.spawn(function()
+            while _G.Bless == true do
+                local player = game.Players.LocalPlayer
+                local blessPath = player:WaitForChild("PlayerGui"):WaitForChild("Combat"):WaitForChild("ActionBG"):WaitForChild("AttacksPage"):WaitForChild("Attack"):WaitForChild("ScrollingFrame"):WaitForChild("Bless"):WaitForChild("CD"):WaitForChild("Count")
+
+                -- Check if Bless is usable
+                if blessPath and blessPath.Text == "" then
+                    -- Find a target using the priority system
+                    local targetName = findTarget()
+                    if targetName then
+                        -- Use Bless on the target
+                        local args = {
+                            [1] = "Attack",
+                            [2] = "Bless",
+                            [3] = {
+                                ["Attacking"] = workspace:WaitForChild("Living"):WaitForChild(targetName)
+                            }
+                        }
+                        game:GetService("ReplicatedStorage"):WaitForChild("PlayerTurnInput"):InvokeServer(unpack(args))
+                    else
+                        warn("No valid target found for Bless!")
+                    end
+                else
+                    -- Bless is on cooldown, use Meditate
+                    local args = {
+                        [1] = "Meditate",
+                        [2] = false
+                    }
+                    game:GetService("ReplicatedStorage"):WaitForChild("PlayerTurnInput"):InvokeServer(unpack(args))
+                end
+
+                wait(1) -- Adjust the delay as needed
+            end
+        end)
+    else
+        _G.Bless = false
+    end
+end)
 -------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------
@@ -271,4 +318,3 @@ SettingsSection:NewButton("Server hop", "Teleports you to the location you choos
     local p = game:GetService("Players").LocalPlayer
     ts:TeleportToPlaceInstance(game.PlaceId, game.JobId)
 end)
-
