@@ -167,6 +167,36 @@ INGSection:NewToggle("Money / XP Farm", "It litterally does what the name says..
     end
 end)
 
+INGSection:NewToggle("item pickup", "It literally does what the name says...", function(state)
+    if state then
+        itempickup = true
+        task.spawn(function()
+            while itempickup do
+                for _, v in pairs(workspace:WaitForChild("Tools"):GetChildren()) do
+                    if not itempickup then break end -- break early if toggled off
+
+                    local character = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
+                    local hrp = character:FindFirstChild("HumanoidRootPart")
+
+                    if v:IsA("BasePart") and hrp then
+                        hrp.CFrame = CFrame.new(v.Position)
+                        wait(0.5)
+                    elseif v:IsA("Model") then
+                        local part = v:FindFirstChildWhichIsA("BasePart")
+                        if part and hrp then
+                            hrp.CFrame = CFrame.new(part.Position)
+                            wait(0.5)
+                        end
+                    end
+                end
+                wait(0.5)
+            end
+        end)
+    else
+        itempickup = false
+    end
+end)
+
 local INGSection = Main:NewSection("OP")
 
 local UserInputService = game:GetService("UserInputService")
