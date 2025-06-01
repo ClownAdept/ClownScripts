@@ -1,0 +1,107 @@
+
+
+-- 📢 Notification function
+local function notification()
+    local StarterGui = game:GetService("StarterGui")
+    StarterGui:SetCore("SendNotification", {
+        Title = "Clown's EasyExec",
+        Text = "Loaded: AutoFarm & Anti-AFK & Claim Money",
+        Icon = "rbxassetid://9137879702",
+        Duration = 10
+    })
+end
+
+-- 🛡 Anti-AFK function
+local function runAntiAFK()
+    _G.antiafk = true 
+    while _G.antiafk do
+        wait(1)
+        local success, getconnections = pcall(function()
+            return getconnections or get_signal_cons
+        end)
+
+        if success and getconnections then
+            for _, conn in pairs(getconnections(game:GetService("Players").LocalPlayer.Idled)) do
+                if conn.Disable then
+                    conn:Disable()
+                elseif conn.Disconnect then
+                    conn:Disconnect()
+                end
+            end
+        else
+            local vu = game:GetService("VirtualUser")
+            game:GetService("Players").LocalPlayer.Idled:Connect(function()
+                vu:CaptureController()
+                vu:ClickButton2(Vector2.new())
+            end)
+        end
+    end
+end
+
+-- 🎯 Quest spam function
+local function runQuestFires()
+    _G.farm = true
+    while _G.farm == true do
+        local ReplicatedStorage = game:GetService("ReplicatedStorage")
+        local QuestEvent = ReplicatedStorage.Main.Shop.Quest
+
+        local gucciArgs = { "Gucci", false }
+        local turtleArgs = { "Turtle", false }
+        local letterArgs = { "Letter", false }
+
+        QuestEvent:FireServer(unpack(gucciArgs))
+        QuestEvent:FireServer(unpack(turtleArgs))
+        QuestEvent:FireServer(unpack(letterArgs))
+
+        wait(0.1)
+
+        gucciArgs[2] = true
+        turtleArgs[2] = true
+        letterArgs[2] = true
+
+        QuestEvent:FireServer(unpack(gucciArgs))
+        QuestEvent:FireServer(unpack(turtleArgs))
+        QuestEvent:FireServer(unpack(letterArgs))
+
+        wait(5)
+    end
+end
+
+-- 💸 Auto Use Money function (& use money)
+local function runUseMoney()
+    _G.useMoney = true
+    while _G.useMoney do
+        wait()
+
+        local player = game:GetService("Players").LocalPlayer
+        local backpack = player:WaitForChild("Backpack")
+        local character = player.Character or player.CharacterAdded:Wait()
+
+        local toolNames = {
+            "Very Big Money Stack",
+            "Money Stack"
+        }
+
+        for _, toolName in ipairs(toolNames) do
+            local tool = backpack:FindFirstChild(toolName)
+            if tool then
+                tool.Parent = character
+                wait()
+                tool:Activate()
+                wait()
+            else
+                local equippedTool = character:FindFirstChild(toolName)
+                if equippedTool then
+                    equippedTool:Activate()
+                    wait()
+                end
+            end
+        end
+    end
+end
+
+-- 🚀 Start both functions in parallel using coroutine.wrap
+coroutine.wrap(runAntiAFK)()
+coroutine.wrap(runQuestFires)()
+coroutine.wrap(runUseMoney)()
+coroutine.wrap(notification)()
