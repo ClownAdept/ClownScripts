@@ -100,8 +100,13 @@ local function runUseMoney()
     end
 end
 
+local function tpnewzs()
+    game.Players.LocalPlayer.Character:MoveTo(Vector3.new(12418, 7, -1070))
+end
+
 -- 🚀 Start both functions in parallel using coroutine.wrap
 coroutine.wrap(runAntiAFK)()
 coroutine.wrap(runQuestFires)()
 coroutine.wrap(runUseMoney)()
+coroutine.wrap(tpnewzs)()
 coroutine.wrap(notification)()
