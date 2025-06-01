@@ -1,0 +1,136 @@
+if not game:IsLoaded() then
+    game.Loaded:Wait()
+end
+
+------------------------------------------------------------------------
+
+local function waitUntilFirstMove()
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+
+    local initialPosition = humanoidRootPart.Position
+
+    while true do
+        local currentPosition = humanoidRootPart.Position
+        if (currentPosition - initialPosition).magnitude > 5 then
+            break
+        end
+        wait(0.1)
+    end
+end
+
+waitUntilFirstMove()
+wait(3)
+
+------------------------------------------------------------------------
+
+local function dodge()
+    _G.dodge = true
+    while _G.dodge == true do
+        local args = {
+            [1] = {
+                [1] = true,
+                [2] = true
+            },
+            [2] = "DodgeMinigame"
+        }
+        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Information"):WaitForChild("RemoteFunction"):FireServer(unpack(args))
+        wait(.1)
+    end
+end
+
+------------------------------------------------------------------------
+
+local function getWeaponType()
+    local player = game.Players.LocalPlayer
+    local classTextPath = player:WaitForChild("PlayerGui"):WaitForChild("StatMenu"):WaitForChild("Main"):WaitForChild("Container"):WaitForChild("Classes"):WaitForChild("Class"):WaitForChild("Container"):WaitForChild("ClassNames"):WaitForChild("OtherClass2")
+    local classText = classTextPath.Text
+    local className = string.match(classText, "Base Class: (.+)")
+    local classToWeapon = {
+        ["Martial Artist"] = "Fist",
+        ["Warrior"] = "Sword",
+        ["Slayer"] = "Spear",
+        ["Thief"] = "Dagger",
+        ["Wizard"] = "Magic"
+    }
+    return classToWeapon[className]
+end
+
+------------------------------------------------------------------------
+
+local function autoQTE()
+    _G.autoqte = true
+    while _G.autoqte == true do
+        _G.qtetype = getWeaponType()
+        local args = {
+            [1] = true,
+            [2] = _G.qtetype .. "QTE"
+        }
+        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Information"):WaitForChild("RemoteFunction"):FireServer(unpack(args))
+        local player = game.Players.LocalPlayer
+        local qtePath = player:WaitForChild("PlayerGui"):WaitForChild("Combat"):FindFirstChild(_G.qtetype .. "QTE")
+        if qtePath then
+            qtePath.Visible = false
+            for _, child in ipairs(qtePath:GetDescendants()) do
+                if child:IsA("GuiObject") then
+                    child.Visible = false
+                end
+            end
+        end
+        wait(.1)
+    end
+end
+
+------------------------------------------------------------------------
+
+local function infjump()
+    _G.InfiniteJumpEnabled = true
+    game:GetService("UserInputService").JumpRequest:connect(function()
+        if _G.InfiniteJumpEnabled == true then
+            game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
+            wait()
+        end
+    end)
+end
+
+------------------------------------------------------------------------
+
+local function notification()
+    _G.qtetype = getWeaponType()
+    local StarterGui = game:GetService("StarterGui")
+    StarterGui:SetCore("SendNotification", {
+        Title = "Clown's EasyExec",
+        Text = "Loaded: AutoDodge, InfJump, and AutoQTE = " .. (_G.qtetype or "Unknown") .. " (Press P to update QTE)",
+        Icon = "rbxassetid://9137879702",
+        Duration = 10
+    })
+end
+
+------------------------------------------------------------------------
+
+coroutine.wrap(dodge)()
+coroutine.wrap(infjump)()
+coroutine.wrap(notification)()
+coroutine.wrap(autoQTE)()
+
+------------------------------------------------------------------------
+
+local UserInputService = game:GetService("UserInputService")
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if gameProcessed then return end
+    if input.KeyCode == Enum.KeyCode.P then
+        _G.autoqte = false
+        wait(0.1)
+        _G.qtetype = getWeaponType()
+        _G.autoqte = true
+        coroutine.wrap(autoQTE)()
+        local StarterGui = game:GetService("StarterGui")
+        StarterGui:SetCore("SendNotification", {
+            Title = "QTE Updated",
+            Text = "New QTE Type: " .. (_G.qtetype or "Unknown"),
+            Icon = "rbxassetid://9137879702",
+            Duration = 5
+        })
+    end
+end)
