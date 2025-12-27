@@ -168,12 +168,13 @@ local function getPlayerBattle()
 end
 
 local priorityList = {
+    "Frosted Slime", "Thanasludd", "Joyous Spirit", "Gon", 
     "Grass Spirit", "Zombie Mushroom", "Slime", "Thief", "Goblin", "Star Slime",
     "Sand Elemental", "Desert Bandit", "Stray Sandstorm", "Sand Golem", "Night Raider",
     "Magma Golem", "Lava Crab", "Fog Spirit", "Venom Shroom", "Cursed Corpse", "Cess Horror",
     "Sentient Darkness", "Fog", "Shadeblade", "Sheea Elementalist", "Sheea Paladin",
     "Sheea Saint", "Frosted Slime", "Joyous Spirit", "King Slime", "Yar'thul, the Blazing Dragon",
-    "Thorian, the Rotten", "Metrom's Vessel", "Seraphon", "Arkhaia", "Frosted Slime", "Thanasludd", "Joyous Spirit", "Gon"
+    "Thorian, the Rotten", "Metrom's Vessel", "Seraphon", "Arkhaia"
 }
 
 local function findTarget()
