@@ -70,7 +70,7 @@ local function runDifficultySelect()
             "Extreme"
         }
         game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("GameModes"):WaitForChild("XMasDifficulties"):FireServer(unpack(args))
-        wait(0.2)
+        wait(1)
     end
 end
 
@@ -85,7 +85,7 @@ local function runAutoSkip()
 	        "Vote"
         }
         game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Upboard"):FireServer(unpack(args))
-        wait(0.2)
+        wait(1)
     end
 end
 
@@ -93,14 +93,30 @@ end
 
 -- 🎯 gamespeed
 local function rungamespeed()
-    wait(10)
-    local args = {
-	"ChangeGameSpeed",
-	3
-}
-game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Upboard"):FireServer(unpack(args))
+    _G.gamespeed = true 
+    while _G.gamespeed do
+        local args = {
+	        "ChangeGameSpeed",
+	        3
+        }
+        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Upboard"):FireServer(unpack(args))
+        wait(10)
+    end
 end
 
+
+
+-- 🎯 Replay
+local function runreplay()
+    _G.replay = true 
+    while _G.replay do
+        local args = {
+            "PlayAgain"
+        }
+        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Upboard"):FireServer(unpack(args))
+        wait(1)
+    end
+end
 
 
 -- 🚀 Start both functions in parallel using coroutine.wrap
@@ -109,4 +125,5 @@ coroutine.wrap(runCandyTP)()
 coroutine.wrap(runDifficultySelect)()
 coroutine.wrap(runAutoSkip)()
 coroutine.wrap(rungamespeed)()
+coroutine.wrap(runreplay)()
 coroutine.wrap(notification)()
