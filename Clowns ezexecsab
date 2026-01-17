@@ -38,18 +38,24 @@ end
 
 
 local function runAntiRejoin()
-    local player = game:GetService("Players").LocalPlayer
+    local Players = game:GetService("Players")
+    local player = Players.LocalPlayer
+    local VirtualUser = game:GetService("VirtualUser")
+    local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+    local cam = workspace.CurrentCamera
     _G.antirejoin = true
     coroutine.wrap(function()
         while _G.antirejoin do
-            local char = player.Character or player.CharacterAdded:Wait()
-            local hrp = char:WaitForChild("HumanoidRootPart")
-            local humanoid = char:WaitForChild("Humanoid")
-            hrp.CFrame = hrp.CFrame * CFrame.new(0, 0, -2)
-            task.wait(0.25)
-            hrp.CFrame = hrp.CFrame * CFrame.new(0, 0, 2)
-            humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-            task.wait(300)
+            player.Idled:Connect(function()
+                VirtualUser:CaptureController()
+                VirtualUser:ClickButton2(Vector2.new())
+            end)
+            if hrp then
+                hrp.CFrame = hrp.CFrame * CFrame.new(0.05, 0, 0)
+                hrp.CFrame = hrp.CFrame * CFrame.new(-0.05, 0, 0)
+            end
+            cam.CFrame = cam.CFrame * CFrame.Angles(0, math.rad(0.5), 0)
+            task.wait(600)
         end
     end)()
 end
