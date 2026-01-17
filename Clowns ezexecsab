@@ -1,0 +1,255 @@
+local function notification()
+    local StarterGui = game:GetService("StarterGui")
+    StarterGui:SetCore("SendNotification", {
+        Title = "Clown's EasyExec",
+        Text = "Loaded: Autobuy & EventOpen & Anti-AFK",
+        Icon = "rbxassetid://9137879702",
+        Duration = 10
+    })
+end
+
+
+
+local function runAntiAFK()
+    _G.antiafk = true 
+    while _G.antiafk do
+        wait(1)
+        local success, getconnections = pcall(function()
+            return getconnections or get_signal_cons
+        end)
+        if success and getconnections then
+            for _, conn in pairs(getconnections(game:GetService("Players").LocalPlayer.Idled)) do
+                if conn.Disable then
+                    conn:Disable()
+                elseif conn.Disconnect then
+                    conn:Disconnect()
+                end
+            end
+        else
+            local vu = game:GetService("VirtualUser")
+            game:GetService("Players").LocalPlayer.Idled:Connect(function()
+                vu:CaptureController()
+                vu:ClickButton2(Vector2.new())
+            end)
+        end
+    end
+end
+
+
+
+local function runAntiRejoin()
+    local Players = game:GetService("Players")
+    local player = Players.LocalPlayer
+    local VirtualUser = game:GetService("VirtualUser")
+    local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+    local cam = workspace.CurrentCamera
+    _G.antirejoin = true
+    coroutine.wrap(function()
+        while _G.antirejoin do
+            player.Idled:Connect(function()
+                VirtualUser:CaptureController()
+                VirtualUser:ClickButton2(Vector2.new())
+            end)
+            if hrp then
+                hrp.CFrame = hrp.CFrame * CFrame.new(0.05, 0, 0)
+                hrp.CFrame = hrp.CFrame * CFrame.new(-0.05, 0, 0)
+            end
+            cam.CFrame = cam.CFrame * CFrame.Angles(0, math.rad(0.5), 0)
+            task.wait(600)
+        end
+    end)()
+end
+
+
+
+local function runBuyDice()
+    _G.buydice = true
+    local buy = game:GetService("ReplicatedStorage")
+        :WaitForChild("Events")
+        :WaitForChild("buy")
+    local diceList = {
+        "Basic Dice",
+        "Nebula Dice",
+        "Singularity Dice",
+        "Aqua Dice",
+        "Lucky Dice",
+        "Void Dice",
+        "Ethereal Dice",
+        "Celestial Dice",
+        "Solar Dice",
+        "Abyssal Dice",
+        "Hell Dice",
+        "Infinity Dice",
+        "Blackhole Dice",
+        "Death Dice",
+        "Paradoxical Dice",
+        "Soul Dice",
+        "Joker Dice",
+        "Reality Dice",
+        "Kraken Dice",
+        "Seraphic Dice",
+        "Galactic Dice",
+        "Eldritch Dice",
+        "Emperor Dice",
+    }
+    while _G.buydice do
+        local player = game:GetService("Players").LocalPlayer
+        local restockFrame = player.PlayerGui.Main.Restock.ScrollingFrame
+        for _, diceName in ipairs(diceList) do
+            local diceFrame = restockFrame:FindFirstChild(diceName)
+            if diceFrame and diceFrame:FindFirstChild("stock") then
+                local stock = tonumber(diceFrame.stock.Text:match("%d+"))
+                if stock and stock > 0 then
+                    local args = {
+                        diceName,
+                        stock,
+                        "dice"
+                    }
+                    buy:InvokeServer(unpack(args))
+                    task.wait(0.05)
+                end
+            end
+        end
+        task.wait(1)
+    end
+end
+
+
+
+
+local function runBuyPotion()
+    _G.buypotion = true
+    while _G.buypotion do
+        local buy = game:GetService("ReplicatedStorage")
+            :WaitForChild("Events")
+            :WaitForChild("buy")
+        local potionList = {
+            "Mutation Chance Potion 1",
+            "Money Potion 3",
+            "Luck Potion 3",
+        }
+        for _, potionName in ipairs(potionList) do
+            local args = {
+                potionName,
+                1,
+                "potion"
+            }
+            buy:InvokeServer(unpack(args))
+            task.wait(0.05)
+        end
+    end
+end
+
+
+
+local function runNoNoti()
+    wait(1)
+    local player = game:GetService("Players").LocalPlayer
+    local gui = player:WaitForChild("PlayerGui")
+    local botNot = gui:WaitForChild("bot_not")
+    local frame = botNot:WaitForChild("Frame")
+    frame.Visible = false
+end
+
+
+
+local function runEquipBest()
+    _G.Equipbest = true
+    while _G.Equipbest do
+        wait(300)
+        game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("PlaceBestBaddies"):InvokeServer()
+    end
+end
+
+
+
+local function runWheelSpin()
+    _G.WheelSpin = true
+    while _G.WheelSpin do
+        game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("spinrequest"):InvokeServer()
+        wait(0.1)
+    end
+end
+
+
+
+local function runEventRoll()
+    local Players = game:GetService("Players")
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+    local player = Players.LocalPlayer
+    local updateDice = ReplicatedStorage:WaitForChild("Events"):WaitForChild("updateRollingDice")
+    local acceptableEvents = {
+        ["Aurora Borealis"] = true,
+        ["Solar Flare"] = true
+    }
+    local dicePriority = {
+        "Emperor Dice",
+        "Eldritch Dice",
+        "Galactic Dice",
+        "Seraphic Dice",
+        "Kraken Dice",
+        "Reality Dice",
+        "Joker Dice",
+        "Soul Dice",
+        "Paradoxical Dice",
+        "Death Dice",
+        "Blackhole Dice",
+        "Infinity Dice",
+        "Hell Dice",
+        "Abyssal Dice",
+        "Solar Dice",
+        "Celestial Dice",
+        "Ethereal Dice",
+        "Void Dice",
+        "Lucky Dice",
+        "Aqua Dice",
+        "Singularity Dice",
+        "Nebula Dice",
+        "Basic Dice"
+    }
+    _G.eventRoll = true
+    coroutine.wrap(function()
+        while _G.eventRoll do
+            local weatherFrame = player.PlayerGui.Main.WeatherContainer.Frame
+            local diceContainer = player.PlayerGui.Main.Dice.Container
+            local rawTitle = weatherFrame.Title.Text
+            local timerText = weatherFrame.Timer.Text
+            local eventName = rawTitle:gsub("<[^>]+>", "")
+            local eventActive = acceptableEvents[eventName] and timerText ~= "0:00"
+            local ownedDice = {}
+            for _, d in ipairs(diceContainer:GetChildren()) do
+                ownedDice[d.Name] = true
+            end
+            local currentDice = player.PlayerGui.Main.Dice.title.Text
+            if currentDice ~= "" then
+                ownedDice[currentDice] = true
+            end
+            if eventActive then
+                for _, diceName in ipairs(dicePriority) do
+                    if ownedDice[diceName] then
+                        updateDice:FireServer(diceName)
+                        break
+                    end
+                end
+            else
+                updateDice:FireServer("Basic Dice")
+            end
+            pcall(function()
+                player.PlayerGui.Main.Dice.RollState:InvokeServer()
+            end)
+            task.wait(0.15)
+        end
+    end)()
+end
+
+
+
+coroutine.wrap(runBuyDice)()
+coroutine.wrap(runEventRoll)()
+coroutine.wrap(runBuyPotion)()
+coroutine.wrap(runNoNoti)()
+coroutine.wrap(runWheelSpin)()
+coroutine.wrap(runEquipBest)()
+coroutine.wrap(runAntiRejoin)()
+coroutine.wrap(runAntiAFK)()
+coroutine.wrap(notification)()
