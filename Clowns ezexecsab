@@ -181,6 +181,8 @@ local function runEventRoll()
     local player = Players.LocalPlayer
     local updateDice = ReplicatedStorage:WaitForChild("Events"):WaitForChild("updateRollingDice")
     local acceptableEvents = {
+        ["Twilight Oblivion"] = true,
+        ["Falling Stars"] = true,
         ["Aurora Borealis"] = true,
         ["Solar Flare"] = true
     }
