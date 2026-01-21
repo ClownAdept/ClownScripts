@@ -91,6 +91,8 @@ local function runBuyDice()
         "Galactic Dice",
         "Eldritch Dice",
         "Emperor Dice",
+        "Annihilation Dice",
+        "Disaster Dice",
     }
     while _G.buydice do
         local player = game:GetService("Players").LocalPlayer
@@ -183,6 +185,8 @@ local function runEventRoll()
         ["Solar Flare"] = true
     }
     local dicePriority = {
+        "Disaster Dice",
+        "Annihilation Dice",
         "Emperor Dice",
         "Eldritch Dice",
         "Galactic Dice",
