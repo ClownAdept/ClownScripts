@@ -91,8 +91,8 @@ local function runBuyDice()
         "Galactic Dice",
         "Eldritch Dice",
         "Emperor Dice",
-        "Annihilation Dice",
-        "Disaster Dice",
+        "Impossible Dice",
+        "Limbo Dice",
     }
     while _G.buydice do
         local player = game:GetService("Players").LocalPlayer
@@ -116,6 +116,23 @@ local function runBuyDice()
     end
 end
 
+
+
+local function runMerchantBuy()
+    _G.merchantbuy = true
+    local merchantBuy = game:GetService("ReplicatedStorage")
+        :WaitForChild("Events")
+        :WaitForChild("MerchantBuy")
+
+    while _G.merchantbuy do
+        for _, id in ipairs({3, 2, 1}) do
+            local args = { id }
+            merchantBuy:InvokeServer(unpack(args))
+            task.wait(0.1)
+        end
+        task.wait(1) -- delay before looping again
+    end
+end
 
 
 
@@ -181,14 +198,12 @@ local function runEventRoll()
     local player = Players.LocalPlayer
     local updateDice = ReplicatedStorage:WaitForChild("Events"):WaitForChild("updateRollingDice")
     local acceptableEvents = {
-        ["Twilight Oblivion"] = true,
-        ["Falling Stars"] = true,
         ["Aurora Borealis"] = true,
         ["Solar Flare"] = true
     }
     local dicePriority = {
-        "Disaster Dice",
-        "Annihilation Dice",
+        "Limbo Dice",
+        "Impossible Dice",
         "Emperor Dice",
         "Eldritch Dice",
         "Galactic Dice",
@@ -250,6 +265,7 @@ end
 
 
 
+coroutine.wrap(runMerchantBuy)()
 coroutine.wrap(runBuyDice)()
 coroutine.wrap(runEventRoll)()
 coroutine.wrap(runBuyPotion)()
