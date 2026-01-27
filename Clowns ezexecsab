@@ -265,7 +265,6 @@ end
 
 
 
-coroutine.wrap(runMerchantBuy)()
 coroutine.wrap(runBuyDice)()
 coroutine.wrap(runEventRoll)()
 coroutine.wrap(runBuyPotion)()
