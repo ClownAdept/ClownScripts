@@ -91,6 +91,8 @@ local function runBuyDice()
         "Galactic Dice",
         "Eldritch Dice",
         "Emperor Dice",
+        "Annihilation Dice",
+        "Disaster Dice",
         "Impossible Dice",
         "Limbo Dice",
     }
@@ -113,24 +115,6 @@ local function runBuyDice()
             end
         end
         task.wait(1)
-    end
-end
-
-
-
-local function runMerchantBuy()
-    _G.merchantbuy = true
-    local merchantBuy = game:GetService("ReplicatedStorage")
-        :WaitForChild("Events")
-        :WaitForChild("MerchantBuy")
-
-    while _G.merchantbuy do
-        for _, id in ipairs({3, 2, 1}) do
-            local args = { id }
-            merchantBuy:InvokeServer(unpack(args))
-            task.wait(0.1)
-        end
-        task.wait(1) -- delay before looping again
     end
 end
 
@@ -198,12 +182,16 @@ local function runEventRoll()
     local player = Players.LocalPlayer
     local updateDice = ReplicatedStorage:WaitForChild("Events"):WaitForChild("updateRollingDice")
     local acceptableEvents = {
+        ["Twilight Oblivion"] = true,
+        ["Falling Stars"] = true,
         ["Aurora Borealis"] = true,
         ["Solar Flare"] = true
     }
     local dicePriority = {
         "Limbo Dice",
         "Impossible Dice",
+        "Disaster Dice",
+        "Annihilation Dice",
         "Emperor Dice",
         "Eldritch Dice",
         "Galactic Dice",
@@ -265,6 +253,48 @@ end
 
 
 
+local function runMerchantBuy()
+    local Players = game:GetService("Players")
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+    local player = Players.LocalPlayer
+    local merchantBuy = ReplicatedStorage:WaitForChild("Events"):WaitForChild("MerchantBuy")
+    _G.merchantbuy = true
+    coroutine.wrap(function()
+        while _G.merchantbuy do
+            local shop = player.PlayerGui:FindFirstChild("Main")
+                and player.PlayerGui.Main:FindFirstChild("MerchantShop")
+            if shop and shop:FindFirstChild("ScrollingFrame") then
+                local offers = shop.ScrollingFrame:FindFirstChild("DiceOffers")
+                if offers then
+                    for i = 1, 3 do
+                        local offer = offers:FindFirstChild("Offer_" .. i)
+                        local stockLabel = offer and offer:FindFirstChild("Stock")
+                        if stockLabel then
+                            local stockText = stockLabel.Text
+                            if stockText ~= "SOLD OUT" then
+                                local stock = tonumber(stockText:match("%d+"))
+                                if stock and stock > 0 then
+                                    for _ = 1, stock do
+                                        pcall(function()
+                                            merchantBuy:InvokeServer(i)
+                                        end)
+                                        task.wait(0.12)
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+            task.wait(1)
+        end
+    end)()
+end
+
+
+
+
+coroutine.wrap(runMerchantBuy)()
 coroutine.wrap(runBuyDice)()
 coroutine.wrap(runEventRoll)()
 coroutine.wrap(runBuyPotion)()
