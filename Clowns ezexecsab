@@ -191,6 +191,8 @@ local function runEventRoll()
         ["Solar Flare"] = true
     }
     local dicePriority = {
+        "Yinyang Dice",
+        "Chronos Dice",
         "Limbo Dice",
         "Impossible Dice",
         "Disaster Dice",
