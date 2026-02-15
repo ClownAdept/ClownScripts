@@ -95,6 +95,8 @@ local function runBuyDice()
         "Disaster Dice",
         "Impossible Dice",
         "Limbo Dice",
+        "Chronos Dice",
+        "Yinyang Dice",
     }
     while _G.buydice do
         local player = game:GetService("Players").LocalPlayer
@@ -127,6 +129,7 @@ local function runBuyPotion()
             :WaitForChild("Events")
             :WaitForChild("buy")
         local potionList = {
+            "No Consume Dice Potion 1",
             "Mutation Chance Potion 1",
             "Money Potion 3",
             "Luck Potion 3",
