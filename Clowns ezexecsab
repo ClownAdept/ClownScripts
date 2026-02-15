@@ -2,7 +2,7 @@ local function notification()
     local StarterGui = game:GetService("StarterGui")
     StarterGui:SetCore("SendNotification", {
         Title = "Clown's EasyExec",
-        Text = "Loaded: Autobuy & EventOpen & Anti-AFK",
+        Text = "Loaded: Retro is a stinky jew",
         Icon = "rbxassetid://9137879702",
         Duration = 10
     })
