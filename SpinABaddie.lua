@@ -143,8 +143,6 @@ end
 
 
 
-
-
 local function autobuydice()
     local Players = game:GetService("Players")
     local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -211,40 +209,31 @@ local function autoClaimQuests()
     local Players = game:GetService("Players")
     local ReplicatedStorage = game:GetService("ReplicatedStorage")
     local player = Players.LocalPlayer
-
     local questRemote = ReplicatedStorage:WaitForChild("Events"):WaitForChild("QuestRemote")
     local questFrame = player.PlayerGui.Main.Quests.ScrollingFrame
-
     local function parseProgress(text)
         local current, total = string.match(text, "(%d+)%s*/%s*(%d+)")
         return tonumber(current), tonumber(total)
     end
-
     while true do
         for _, quest in ipairs(questFrame:GetChildren()) do
             if quest:IsA("GuiObject") and quest.Name:match("^Quest_%d+$") then
-
                 local countLabel = quest:FindFirstChild("Count")
                 if countLabel and countLabel:IsA("TextLabel") then
                     local current, total = parseProgress(countLabel.Text)
-
                     if current and total and current == total then
                         local questNumber = tonumber(quest.Name:match("%d+"))
-
                         if questNumber then
                             questRemote:InvokeServer("ClaimReward", questNumber)
-                            task.wait(0.2) -- prevent spam
+                            task.wait(0.2)
                         end
                     end
                 end
             end
         end
-
-        task.wait(2) -- scan interval
+        task.wait(2)
     end
 end
-
-
 
 
 
