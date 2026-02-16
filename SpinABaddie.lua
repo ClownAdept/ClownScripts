@@ -81,28 +81,29 @@ local function runEventRoll()
             for _, d in ipairs(diceContainer:GetChildren()) do
                 owned[d.Name] = true
             end
-            local current = main.Dice.title.Text
-            if current ~= "" then
-                owned[current] = true
-            end
-            local bestOwnedDice = "Basic Dice"
-            for _, diceData in ipairs(priorityList) do
-                if owned[diceData.Name] then
-                    bestOwnedDice = diceData.Name
-                    break
+            local chosenDice = "Basic Dice"
+            if _G.SpinMode == "NONE" then
+                chosenDice = "Basic Dice"
+            elseif _G.SpinMode == "BEST" then
+                for _, diceData in ipairs(priorityList) do
+                    if owned[diceData.Name] then
+                        chosenDice = diceData.Name
+                        break
+                    end
                 end
-            end
-            if SpinMode == 1 then
+            elseif _G.SpinMode == "EVENT" then
                 if eventActive then
-                    updateDice:FireServer(bestOwnedDice)
+                    for _, diceData in ipairs(priorityList) do
+                        if owned[diceData.Name] then
+                            chosenDice = diceData.Name
+                            break
+                        end
+                    end
                 else
-                    updateDice:FireServer("Basic Dice")
+                    chosenDice = "Basic Dice"
                 end
-            elseif SpinMode == 2 then
-                updateDice:FireServer(bestOwnedDice)
-            elseif SpinMode == 3 then
-                updateDice:FireServer("Basic Dice")
             end
+            updateDice:FireServer(chosenDice)
             pcall(function()
                 main.Dice.RollState:InvokeServer()
             end)
@@ -113,28 +114,34 @@ end
 
 
 
-local SpinMode
+
 local SpinMode = 1
 local function setupSpinToggle()
     local UIS = game:GetService("UserInputService")
-    local StarterGui = game:GetService("StarterGui")
-    local modes = {"EVENT ONLY", "BEST", "NONE"}
+    _G.SpinMode = "EVENT"
+    local function notify(mode)
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "Spin Mode",
+            Text = "Spin mode: " .. mode,
+            Duration = 3
+        })
+    end
     UIS.InputBegan:Connect(function(input, processed)
         if processed then return end
         if input.KeyCode == Enum.KeyCode.K then
-            SpinMode += 1
-            if SpinMode > #modes then
-                SpinMode = 1
+            if _G.SpinMode == "EVENT" then
+                _G.SpinMode = "BEST"
+            elseif _G.SpinMode == "BEST" then
+                _G.SpinMode = "NONE"
+            else
+                _G.SpinMode = "EVENT"
             end
-            StarterGui:SetCore("SendNotification", {
-                Title = "Spin Mode",
-                Text = modes[SpinMode],
-                Icon = "rbxassetid://9137879702",
-                Duration = 3
-            })
+            notify(_G.SpinMode)
         end
     end)
 end
+
+
 
 
 
@@ -204,31 +211,40 @@ local function autoClaimQuests()
     local Players = game:GetService("Players")
     local ReplicatedStorage = game:GetService("ReplicatedStorage")
     local player = Players.LocalPlayer
+
     local questRemote = ReplicatedStorage:WaitForChild("Events"):WaitForChild("QuestRemote")
     local questFrame = player.PlayerGui.Main.Quests.ScrollingFrame
+
     local function parseProgress(text)
         local current, total = string.match(text, "(%d+)%s*/%s*(%d+)")
         return tonumber(current), tonumber(total)
     end
+
     while true do
         for _, quest in ipairs(questFrame:GetChildren()) do
             if quest:IsA("GuiObject") and quest.Name:match("^Quest_%d+$") then
+
                 local countLabel = quest:FindFirstChild("Count")
                 if countLabel and countLabel:IsA("TextLabel") then
                     local current, total = parseProgress(countLabel.Text)
+
                     if current and total and current == total then
                         local questNumber = tonumber(quest.Name:match("%d+"))
+
                         if questNumber then
                             questRemote:InvokeServer("ClaimReward", questNumber)
-                            task.wait(0.2)
+                            task.wait(0.2) -- prevent spam
                         end
                     end
                 end
             end
         end
-        task.wait(2)
+
+        task.wait(2) -- scan interval
     end
 end
+
+
 
 
 
