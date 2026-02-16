@@ -2,7 +2,7 @@ local function notification()
     local StarterGui = game:GetService("StarterGui")
     StarterGui:SetCore("SendNotification", {
         Title = "Clown's EasyExec",
-        Text = "Loaded: Retro is a stinky jew",
+        Text = "Loaded: AutoBuy, AutoSpin(K toggle)",
         Icon = "rbxassetid://9137879702",
         Duration = 10
     })
@@ -37,6 +37,7 @@ local function runEventRoll()
     local player = Players.LocalPlayer
     local updateDice = ReplicatedStorage:WaitForChild("Events"):WaitForChild("updateRollingDice")
     local acceptableEvents = {
+        ["Rosefall Skies"] = true,
         ["Twilight Oblivion"] = true,
         ["Falling Stars"] = true,
         ["Aurora Borealis"] = true,
@@ -84,14 +85,22 @@ local function runEventRoll()
             if current ~= "" then
                 owned[current] = true
             end
-            if eventActive then
-                for _, diceData in ipairs(priorityList) do
-                    if owned[diceData.Name] then
-                        updateDice:FireServer(diceData.Name)
-                        break
-                    end
+            local bestOwnedDice = "Basic Dice"
+            for _, diceData in ipairs(priorityList) do
+                if owned[diceData.Name] then
+                    bestOwnedDice = diceData.Name
+                    break
                 end
-            else
+            end
+            if SpinMode == 1 then
+                if eventActive then
+                    updateDice:FireServer(bestOwnedDice)
+                else
+                    updateDice:FireServer("Basic Dice")
+                end
+            elseif SpinMode == 2 then
+                updateDice:FireServer(bestOwnedDice)
+            elseif SpinMode == 3 then
                 updateDice:FireServer("Basic Dice")
             end
             pcall(function()
@@ -100,6 +109,31 @@ local function runEventRoll()
             task.wait(0.1)
         end
     end)()
+end
+
+
+
+local SpinMode
+local SpinMode = 1
+local function setupSpinToggle()
+    local UIS = game:GetService("UserInputService")
+    local StarterGui = game:GetService("StarterGui")
+    local modes = {"EVENT ONLY", "BEST", "NONE"}
+    UIS.InputBegan:Connect(function(input, processed)
+        if processed then return end
+        if input.KeyCode == Enum.KeyCode.K then
+            SpinMode += 1
+            if SpinMode > #modes then
+                SpinMode = 1
+            end
+            StarterGui:SetCore("SendNotification", {
+                Title = "Spin Mode",
+                Text = modes[SpinMode],
+                Icon = "rbxassetid://9137879702",
+                Duration = 3
+            })
+        end
+    end)
 end
 
 
@@ -166,6 +200,36 @@ end
 
 
 
+local function autoClaimQuests()
+    local Players = game:GetService("Players")
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+    local player = Players.LocalPlayer
+    local questRemote = ReplicatedStorage:WaitForChild("Events"):WaitForChild("QuestRemote")
+    local questFrame = player.PlayerGui.Main.Quests.ScrollingFrame
+    local function parseProgress(text)
+        local current, total = string.match(text, "(%d+)%s*/%s*(%d+)")
+        return tonumber(current), tonumber(total)
+    end
+    while true do
+        for _, quest in ipairs(questFrame:GetChildren()) do
+            if quest:IsA("GuiObject") and quest.Name:match("^Quest_%d+$") then
+                local countLabel = quest:FindFirstChild("Count")
+                if countLabel and countLabel:IsA("TextLabel") then
+                    local current, total = parseProgress(countLabel.Text)
+                    if current and total and current == total then
+                        local questNumber = tonumber(quest.Name:match("%d+"))
+                        if questNumber then
+                            questRemote:InvokeServer("ClaimReward", questNumber)
+                            task.wait(0.2)
+                        end
+                    end
+                end
+            end
+        end
+        task.wait(2)
+    end
+end
+
 
 
 
@@ -174,5 +238,7 @@ coroutine.wrap(notification)()
 coroutine.wrap(runNoNoti)()
 coroutine.wrap(runWheelSpin)()
 coroutine.wrap(runEventRoll)()
+coroutine.wrap(setupSpinToggle)()
 coroutine.wrap(autobuydice)()
 coroutine.wrap(autobuypotions)()
+coroutine.wrap(autoClaimQuests)()
