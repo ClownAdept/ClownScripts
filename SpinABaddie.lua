@@ -118,7 +118,7 @@ end
 local SpinMode = 1
 local function setupSpinToggle()
     local UIS = game:GetService("UserInputService")
-    _G.SpinMode = "EVENT"
+    _G.SpinMode = "NONE"
     local function notify(mode)
         game:GetService("StarterGui"):SetCore("SendNotification", {
             Title = "Spin Mode",
