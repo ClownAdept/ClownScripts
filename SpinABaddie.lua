@@ -143,6 +143,111 @@ end
 
 
 
+local function runPotionManager()
+    local Players = game:GetService("Players")
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+    local player = Players.LocalPlayer
+    local equipEvent = ReplicatedStorage:WaitForChild("Events"):WaitForChild("equip")
+    local targetPotions = {
+        "Luck Potion 3",
+        "Money Potion 3",
+        "Mutation Chance Potion 1",
+        "No Consume Dice Potion 1"
+    }
+    local function cleanItemName(text)
+        return (text:gsub("%s*%b[]", "")):gsub("%s+$", "")
+    end
+    local function getOwnedPotions()
+        local owned = {}
+        local main = player.PlayerGui.Main
+        local inventoryList = main.Backpack.Inventory.list
+        local hotbar = main.Backpack.Hotbar
+        local function scan(container, keyName)
+            for _, child in ipairs(container:GetChildren()) do
+                local label = child:FindFirstChild(keyName)
+                if label and label:IsA("TextLabel") then
+                    local name = cleanItemName(label.Text or "")
+                    owned[name] = true
+                end
+            end
+        end
+        scan(inventoryList, "inv_key")
+        scan(hotbar, "key")
+        return owned
+    end
+    local function isPotionActive(potionName)
+        local buffs = player.PlayerGui.Main:FindFirstChild("BUFFS")
+        if not buffs then return false end
+        local potionFrame = buffs:FindFirstChild(potionName)
+        if potionFrame and potionFrame:FindFirstChild("TIMER") then
+            return true
+        end
+        return false
+    end
+    local function equipAndUse(potionName)
+        equipEvent:InvokeServer(potionName, true)
+        task.wait(0.25)
+        local character = player.Character or player.CharacterAdded:Wait()
+        local tool = character:FindFirstChildOfClass("Tool")
+        if tool then
+            tool:Activate()
+        end
+        task.wait(0.4)
+        equipEvent:InvokeServer(potionName, false)
+    end
+    _G.PotionMode = "NONE"
+    coroutine.wrap(function()
+        while true do
+            local owned = getOwnedPotions()
+            if _G.PotionMode == "NONE" then
+            elseif _G.PotionMode == "CONSTANT" then
+                for _, potionName in ipairs(targetPotions) do
+                    if owned[potionName] and not isPotionActive(potionName) then
+                        equipAndUse(potionName)
+                        task.wait(0.5)
+                    end
+                end
+            elseif _G.PotionMode == "ALWAYS" then
+                for _, potionName in ipairs(targetPotions) do
+                    if owned[potionName] then
+                        equipAndUse(potionName)
+                    end
+                end
+            end
+            task.wait(1)
+        end
+    end)()
+end
+
+
+
+local function setupPotionToggle()
+    local UIS = game:GetService("UserInputService")
+    _G.PotionMode = "NONE"
+    local function notify(mode)
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "Potion Mode",
+            Text = "Potion mode: " .. mode,
+            Duration = 3
+        })
+    end
+    UIS.InputBegan:Connect(function(input, processed)
+        if processed then return end
+        if input.KeyCode == Enum.KeyCode.L then
+            if _G.PotionMode == "ALWAYS" then
+                _G.PotionMode = "NONE"
+            elseif _G.PotionMode == "NONE" then
+                _G.PotionMode = "CONSTANT"
+            else
+                _G.PotionMode = "ALWAYS"
+            end
+            notify(_G.PotionMode)
+        end
+    end)
+end
+
+
+
 local function autobuydice()
     local Players = game:GetService("Players")
     local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -245,46 +350,38 @@ local function runEquipBest()
     end
 end
 
+
+
 local function runMerchantTempAuto()
     local Players = game:GetService("Players")
     local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
     local player = Players.LocalPlayer
     local merchantBuy = ReplicatedStorage:WaitForChild("Events"):WaitForChild("MerchantBuy")
-
     _G.merchantAuto = true
-
-    -- Temp prompt opener
     coroutine.wrap(function()
         while _G.merchantAuto do
             local outer = workspace:FindFirstChild("Nullity")
             local merchant = outer and outer:FindFirstChild("Nullity")
             local hrp = merchant and merchant:FindFirstChild("HumanoidRootPart")
             local prompt = hrp and hrp:FindFirstChildOfClass("ProximityPrompt")
-
             if prompt then
                 pcall(function()
                     fireproximityprompt(prompt)
                 end)
             end
-
-            task.wait(5) -- retry every 5 seconds
+            task.wait(5)
         end
     end)()
-
-    -- Auto-buy loop
     coroutine.wrap(function()
         while _G.merchantAuto do
             local shop = player.PlayerGui:FindFirstChild("Main")
                 and player.PlayerGui.Main:FindFirstChild("MerchantShop")
             local offers = shop and shop:FindFirstChild("ScrollingFrame")
                 and shop.ScrollingFrame:FindFirstChild("DiceOffers")
-
             if offers then
                 for i = 1, 3 do
                     local offer = offers:FindFirstChild("Offer_" .. i)
                     local stockLabel = offer and offer:FindFirstChild("Stock")
-
                     if stockLabel then
                         local text = stockLabel.Text
                         if text ~= "SOLD OUT" then
@@ -301,11 +398,12 @@ local function runMerchantTempAuto()
                     end
                 end
             end
-
-            task.wait(0.6) -- short delay to avoid spamming
+            task.wait(0.6)
         end
     end)()
 end
+
+
 
 wait(15)
 coroutine.wrap(runEquipBest)()
@@ -314,6 +412,8 @@ coroutine.wrap(runNoNoti)()
 coroutine.wrap(runWheelSpin)()
 coroutine.wrap(runEventRoll)()
 coroutine.wrap(setupSpinToggle)()
+coroutine.wrap(runPotionManager)()
+coroutine.wrap(setupPotionToggle)()
 coroutine.wrap(autobuydice)()
 coroutine.wrap(autobuypotions)()
 coroutine.wrap(autoClaimQuests)()
