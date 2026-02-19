@@ -237,8 +237,78 @@ end
 
 
 
+local function runEquipBest()
+    _G.Equipbest = true
+    while _G.Equipbest do
+        wait(300)
+        game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("PlaceBestBaddies"):InvokeServer()
+    end
+end
 
+local function runMerchantTempAuto()
+    local Players = game:GetService("Players")
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+    local player = Players.LocalPlayer
+    local merchantBuy = ReplicatedStorage:WaitForChild("Events"):WaitForChild("MerchantBuy")
+
+    _G.merchantAuto = true
+
+    -- Temp prompt opener
+    coroutine.wrap(function()
+        while _G.merchantAuto do
+            local outer = workspace:FindFirstChild("Nullity")
+            local merchant = outer and outer:FindFirstChild("Nullity")
+            local hrp = merchant and merchant:FindFirstChild("HumanoidRootPart")
+            local prompt = hrp and hrp:FindFirstChildOfClass("ProximityPrompt")
+
+            if prompt then
+                pcall(function()
+                    fireproximityprompt(prompt)
+                end)
+            end
+
+            task.wait(5) -- retry every 5 seconds
+        end
+    end)()
+
+    -- Auto-buy loop
+    coroutine.wrap(function()
+        while _G.merchantAuto do
+            local shop = player.PlayerGui:FindFirstChild("Main")
+                and player.PlayerGui.Main:FindFirstChild("MerchantShop")
+            local offers = shop and shop:FindFirstChild("ScrollingFrame")
+                and shop.ScrollingFrame:FindFirstChild("DiceOffers")
+
+            if offers then
+                for i = 1, 3 do
+                    local offer = offers:FindFirstChild("Offer_" .. i)
+                    local stockLabel = offer and offer:FindFirstChild("Stock")
+
+                    if stockLabel then
+                        local text = stockLabel.Text
+                        if text ~= "SOLD OUT" then
+                            local stock = tonumber(text:match("%d+"))
+                            if stock and stock > 0 then
+                                for _ = 1, stock do
+                                    pcall(function()
+                                        merchantBuy:InvokeServer(i)
+                                    end)
+                                    task.wait(0.12)
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+
+            task.wait(0.6) -- short delay to avoid spamming
+        end
+    end)()
+end
+
+wait(15)
+coroutine.wrap(runEquipBest)()
 coroutine.wrap(notification)()
 coroutine.wrap(runNoNoti)()
 coroutine.wrap(runWheelSpin)()
@@ -247,3 +317,4 @@ coroutine.wrap(setupSpinToggle)()
 coroutine.wrap(autobuydice)()
 coroutine.wrap(autobuypotions)()
 coroutine.wrap(autoClaimQuests)()
+coroutine.wrap(runMerchantTempAuto)()
