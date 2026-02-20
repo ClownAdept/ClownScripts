@@ -465,6 +465,7 @@ end
 
 
 
+wait()
 coroutine.wrap(runEquipBest)()
 coroutine.wrap(notification)()
 coroutine.wrap(runNoNoti)()
