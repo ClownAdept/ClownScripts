@@ -2,7 +2,7 @@ local function notification()
     local StarterGui = game:GetService("StarterGui")
     StarterGui:SetCore("SendNotification", {
         Title = "Clown's EasyExec",
-        Text = "Loaded: AutoBuy, AutoSpin(K toggle)",
+        Text = "Loaded: Retro is the masterjewbaiter",
         Icon = "rbxassetid://9137879702",
         Duration = 10
     })
@@ -355,43 +355,103 @@ end
 local function runMerchantTempAuto()
     local Players = game:GetService("Players")
     local ReplicatedStorage = game:GetService("ReplicatedStorage")
+    local TweenService = game:GetService("TweenService")
+    local UIS = game:GetService("UserInputService")
+    local StarterGui = game:GetService("StarterGui")
     local player = Players.LocalPlayer
+    local char = player.Character or player.CharacterAdded:Wait()
+    local hrpPlayer = char:WaitForChild("HumanoidRootPart")
     local merchantBuy = ReplicatedStorage:WaitForChild("Events"):WaitForChild("MerchantBuy")
+    if _G.merchantAutoLoaded then return end
+    _G.merchantAutoLoaded = true
     _G.merchantAuto = true
+    local function notify(state)
+        StarterGui:SetCore("SendNotification", {
+            Title = "Merchant Auto",
+            Text = state and "ON" or "OFF",
+            Duration = 3
+        })
+    end
+    UIS.InputBegan:Connect(function(input, processed)
+        if processed then return end
+        if input.KeyCode == Enum.KeyCode.M then
+            _G.merchantAuto = not _G.merchantAuto
+            notify(_G.merchantAuto)
+        end
+    end)
     coroutine.wrap(function()
-        while _G.merchantAuto do
-            local outer = workspace:FindFirstChild("Nullity")
-            local merchant = outer and outer:FindFirstChild("Nullity")
-            local hrp = merchant and merchant:FindFirstChild("HumanoidRootPart")
-            local prompt = hrp and hrp:FindFirstChildOfClass("ProximityPrompt")
-            if prompt then
-                pcall(function()
-                    fireproximityprompt(prompt)
-                end)
+        while true do
+            if _G.merchantAuto then
+                local outer = workspace:FindFirstChild("Nullity")
+                local merchant = outer and outer:FindFirstChild("Nullity")
+                local hrp = merchant and merchant:FindFirstChild("HumanoidRootPart")
+                if hrp then
+                    local distance = (hrp.Position - hrpPlayer.Position).Magnitude
+                    local speed = 150
+                    local time = distance / speed
+                    local tween = TweenService:Create(
+                        hrpPlayer,
+                        TweenInfo.new(time, Enum.EasingStyle.Linear),
+                        {CFrame = hrp.CFrame}
+                    )
+                    tween:Play()
+                    tween.Completed:Wait()
+                end
+            end
+            task.wait(0.5)
+        end
+    end)()
+    coroutine.wrap(function()
+        while true do
+            if _G.merchantAuto then
+                local outer = workspace:FindFirstChild("Nullity")
+                local merchant = outer and outer:FindFirstChild("Nullity")
+                local hrp = merchant and merchant:FindFirstChild("HumanoidRootPart")
+                local prompt = hrp and hrp:FindFirstChildOfClass("ProximityPrompt")
+
+                if prompt then
+                    pcall(function()
+                        fireproximityprompt(prompt)
+                    end)
+                end
             end
             task.wait(5)
         end
     end)()
+    local WORKERS = 5
+    local function buyStockParallel(offerIndex, amount)
+        local remaining = amount
+        local function worker()
+            while remaining > 0 and _G.merchantAuto do
+                remaining -= 1
+                pcall(function()
+                    merchantBuy:InvokeServer(offerIndex)
+                end)
+                task.wait()
+            end
+        end
+        for _ = 1, WORKERS do
+            task.spawn(worker)
+        end
+    end
     coroutine.wrap(function()
-        while _G.merchantAuto do
-            local shop = player.PlayerGui:FindFirstChild("Main")
-                and player.PlayerGui.Main:FindFirstChild("MerchantShop")
-            local offers = shop and shop:FindFirstChild("ScrollingFrame")
-                and shop.ScrollingFrame:FindFirstChild("DiceOffers")
-            if offers then
-                for i = 1, 3 do
-                    local offer = offers:FindFirstChild("Offer_" .. i)
-                    local stockLabel = offer and offer:FindFirstChild("Stock")
-                    if stockLabel then
-                        local text = stockLabel.Text
-                        if text ~= "SOLD OUT" then
-                            local stock = tonumber(text:match("%d+"))
-                            if stock and stock > 0 then
-                                for _ = 1, stock do
-                                    pcall(function()
-                                        merchantBuy:InvokeServer(i)
-                                    end)
-                                    task.wait(0.12)
+        while true do
+            if _G.merchantAuto then
+                local shop = player.PlayerGui:FindFirstChild("Main")
+                    and player.PlayerGui.Main:FindFirstChild("MerchantShop")
+                local offers = shop
+                    and shop:FindFirstChild("ScrollingFrame")
+                    and shop.ScrollingFrame:FindFirstChild("DiceOffers")
+                if offers then
+                    for i = 1, 3 do
+                        local offer = offers:FindFirstChild("Offer_" .. i)
+                        local stockLabel = offer and offer:FindFirstChild("Stock")
+                        if stockLabel then
+                            local text = stockLabel.Text
+                            if text ~= "SOLD OUT" then
+                                local stock = tonumber(text:match("%d+"))
+                                if stock and stock > 0 then
+                                    buyStockParallel(i, stock)
                                 end
                             end
                         end
@@ -405,7 +465,6 @@ end
 
 
 
-wait(15)
 coroutine.wrap(runEquipBest)()
 coroutine.wrap(notification)()
 coroutine.wrap(runNoNoti)()
