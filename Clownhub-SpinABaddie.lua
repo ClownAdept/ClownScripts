@@ -445,7 +445,7 @@ do
                         wait(0.2)
                         repeat
                             pcall(fireproximityprompt, prompt)
-                            task.wait(0.2)
+                            task.wait(2)
                             local shop = player.PlayerGui:FindFirstChild("Main")
                                 and player.PlayerGui.Main:FindFirstChild("MerchantShop")
                             if shop and shop.Visible then
