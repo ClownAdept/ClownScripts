@@ -447,7 +447,10 @@ do
                         tween.Completed:Wait()
                         wait(1)
                         pcall(fireproximityprompt, prompt)
-
+                        wait(5)
+                        pcall(fireproximityprompt, prompt)
+                        wait(5)
+                        pcall(fireproximityprompt, prompt)
                         repeat
                             task.wait(0.5)
                             outer = workspace:FindFirstChild("Nullity")
