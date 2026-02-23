@@ -39,7 +39,6 @@ do
     local spinToggle = Tabs.Main:AddToggle("AutoSpin", {Title = "Auto Dice Spin", Default = false})
     spinToggle:OnChanged(function(value)
         _G.AutoSpin = value
-
         task.spawn(function()
             local Players = game:GetService("Players")
             local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -92,35 +91,48 @@ do
                     if currentDice ~= "" then
                         owned[currentDice] = true
                     end
-                    local chosenDice = "Basic Dice"
-                    if _G.SpinMode == "NONE" then
+                    local chosenDice
+                    if _G.SpinMode == "BASIC" then
                         chosenDice = "Basic Dice"
                     elseif _G.SpinMode == "CURRENT" then
+                        chosenDice = currentDice
                         pcall(function()
                             main.Dice.RollState:InvokeServer()
                         end)
                         task.wait(0.1)
+                        task.wait(0.1)
                         continue
-                    else
+                    elseif _G.SpinMode == "BEST" then
                         local priorityList = buildDicePriority()
-                        if _G.SpinMode == "BEST" or (_G.SpinMode == "EVENT" and eventActive) then
+                        for _, diceData in ipairs(priorityList) do
+                            if owned[diceData.Name] then
+                                chosenDice = diceData.Name
+                                break
+                            end
+                        end
+                    elseif _G.SpinMode == "EVENT" then
+                        local priorityList = buildDicePriority()
+                        if eventActive then
                             for _, diceData in ipairs(priorityList) do
                                 if owned[diceData.Name] then
                                     chosenDice = diceData.Name
                                     break
                                 end
                             end
-                        elseif _G.SpinMode == "EVENT" then
+                        else
                             chosenDice = "Basic Dice"
                         end
                     end
-                    if chosenDice ~= currentDice then
-                        updateDice:FireServer(chosenDice)
+                    if chosenDice then
+                        pcall(function()
+                            updateDice:FireServer(chosenDice)
+                        end)
                     end
                     pcall(function()
                         main.Dice.RollState:InvokeServer()
                     end)
                 end
+
                 task.wait(0.1)
                 if Fluent.Unloaded then break end
             end
@@ -388,9 +400,11 @@ do
         Title = "Auto Buy Merchant",
         Default = false
     })
+
     merchantToggle:OnChanged(function(value)
         _G.MerchantAuto = value
     end)
+
     local Players = game:GetService("Players")
     local ReplicatedStorage = game:GetService("ReplicatedStorage")
     local TweenService = game:GetService("TweenService")
@@ -398,8 +412,10 @@ do
     local char = player.Character or player.CharacterAdded:Wait()
     local hrpPlayer = char:WaitForChild("HumanoidRootPart")
     local merchantBuy = ReplicatedStorage:WaitForChild("Events"):WaitForChild("MerchantBuy")
+
     local WORKERS = 5
-    local merchantDone = false
+
+    -- Buy stock in parallel
     local function buyStockParallel(offerIndex, amount)
         local remaining = amount
         local function worker()
@@ -415,68 +431,81 @@ do
             task.spawn(worker)
         end
     end
+
+    -- Main merchant loop
     task.spawn(function()
+        local lastMerchant = nil
         while true do
-            if _G.MerchantAuto and not merchantDone then
-                local outer = workspace:FindFirstChild("Nullity")
-                local merchant = outer and outer:FindFirstChild("Nullity")
-                local hrp = merchant and merchant:FindFirstChild("HumanoidRootPart")
-                local prompt = hrp and hrp:FindFirstChildOfClass("ProximityPrompt")
-                if hrp then
-                    local distance = (hrp.Position - hrpPlayer.Position).Magnitude
-                    local speed = 150
-                    local time = distance / speed
-                    local tween = TweenService:Create(
-                        hrpPlayer,
-                        TweenInfo.new(time, Enum.EasingStyle.Linear),
-                        {CFrame = hrp.CFrame}
-                    )
-                    tween:Play()
-                    tween.Completed:Wait()
-                end
-                if prompt then
-                    pcall(fireproximityprompt, prompt)
-                end
-            end
             task.wait(0.5)
             if Fluent.Unloaded then break end
-        end
-    end)
-    task.spawn(function()
-    while true do
-        if _G.MerchantAuto then
+            if not _G.MerchantAuto then continue end
+
+            local outer = workspace:FindFirstChild("Nullity")
+            local merchant = outer and outer:FindFirstChild("Nullity")
+            if not merchant or merchant == lastMerchant then
+                continue -- no new merchant or same as before
+            end
+
+            lastMerchant = merchant -- track current merchant
+
+            local hrp = merchant:FindFirstChild("HumanoidRootPart")
+            local prompt = hrp and hrp:FindFirstChildOfClass("ProximityPrompt")
+            if hrp then
+                -- Tween to merchant
+                local distance = (hrp.Position - hrpPlayer.Position).Magnitude
+                local speed = 150
+                local time = distance / speed
+                local tween = TweenService:Create(
+                    hrpPlayer,
+                    TweenInfo.new(time, Enum.EasingStyle.Linear),
+                    {CFrame = hrp.CFrame}
+                )
+                tween:Play()
+                tween.Completed:Wait()
+            end
+
+            if prompt then
+                pcall(fireproximityprompt, prompt)
+            end
+
+            -- Buy all offers
             local shop = player.PlayerGui:FindFirstChild("Main")
                 and player.PlayerGui.Main:FindFirstChild("MerchantShop")
             local offers = shop
                 and shop:FindFirstChild("ScrollingFrame")
                 and shop.ScrollingFrame:FindFirstChild("DiceOffers")
+
             if offers then
+                for i = 1, 3 do
+                    local offer = offers:FindFirstChild("Offer_" .. i)
+                    local stockLabel = offer and offer:FindFirstChild("Stock")
+                    if stockLabel and stockLabel.Text ~= "SOLD OUT" then
+                        local stock = tonumber(stockLabel.Text:match("%d+"))
+                        if stock and stock > 0 then
+                            buyStockParallel(i, stock)
+                        end
+                    end
+                end
+            end
+
+            -- Wait until all stock is bought
+            repeat
+                task.wait(0.5)
                 local allSoldOut = true
                 for i = 1, 3 do
                     local offer = offers:FindFirstChild("Offer_" .. i)
                     local stockLabel = offer and offer:FindFirstChild("Stock")
-                    if stockLabel then
-                        local text = stockLabel.Text
-                        if text ~= "SOLD OUT" then
-                            local stock = tonumber(text:match("%d+"))
-                            if stock and stock > 0 then
-                                allSoldOut = false
-                                buyStockParallel(i, stock)
-                            end
-                        end
+                    if stockLabel and stockLabel.Text ~= "SOLD OUT" then
+                        allSoldOut = false
+                        break
                     end
                 end
-                if allSoldOut then
-                    merchantDone = true
-                else
-                    merchantDone = false
-                end
-            end
+            until allSoldOut or not _G.MerchantAuto
+
+            -- Stop until next merchant spawns
+            lastMerchant = merchant
         end
-        task.wait(0.6)
-        if Fluent.Unloaded then break end
-    end
-end)
+    end)
 
     -- Auto Spin Wheel
     local wheelToggle = farmTab:AddToggle("WheelSpin", {Title = "Auto Spin Wheel", Default = false})
