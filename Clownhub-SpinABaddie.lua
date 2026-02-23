@@ -435,29 +435,20 @@ do
             if not _G.MerchantAuto then continue end
             local outer = workspace:FindFirstChild("Nullity")
             local merchant = outer and outer:FindFirstChild("Nullity")
-            if not merchant or merchant == lastMerchant then continue end
+            if not merchant or merchant == lastMerchant then
+                continue
+            end
             lastMerchant = merchant
             local hrp = merchant:FindFirstChild("HumanoidRootPart")
             local prompt = hrp and hrp:FindFirstChildOfClass("ProximityPrompt")
-            if hrp then
-                local dist = (hrp.Position - hrpPlayer.Position).Magnitude
+            if hrp and prompt then
+s                local distance = (hrp.Position - hrpPlayer.Position).Magnitude
                 local speed = 150
-                local tween = TweenService:Create(hrpPlayer, TweenInfo.new(dist / speed, Enum.EasingStyle.Linear), {CFrame = hrp.CFrame})
+                local tween = TweenService:Create(hrpPlayer, TweenInfo.new(distance / speed, Enum.EasingStyle.Linear), {CFrame = hrp.CFrame})
                 tween:Play()
                 tween.Completed:Wait()
                 wait(1)
-                fireproximityprompt(prompt)
-            end
-            if prompt then
-                repeat
-                    pcall(fireproximityprompt, prompt)
-                    task.wait(0.1)
-                    local shop = player.PlayerGui:FindFirstChild("Main")
-                        and player.PlayerGui.Main:FindFirstChild("MerchantShop")
-                    local offers = shop
-                        and shop:FindFirstChild("ScrollingFrame")
-                        and shop.ScrollingFrame:FindFirstChild("DiceOffers")
-                until offers or not _G.MerchantAuto
+                pcall(fireproximityprompt, prompt)
             end
         end
     end)
