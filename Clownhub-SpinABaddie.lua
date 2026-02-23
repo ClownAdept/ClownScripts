@@ -544,7 +544,6 @@ do
 end
 
 -- Hand over to Addons
-diceluckstatz()
 SaveManager:SetLibrary(Fluent)
 InterfaceManager:SetLibrary(Fluent)
 SaveManager:IgnoreThemeSettings()
@@ -563,3 +562,4 @@ Fluent:Notify({
 })
 
 SaveManager:LoadAutoloadConfig()
+diceluckstatz()
