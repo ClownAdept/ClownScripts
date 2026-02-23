@@ -154,7 +154,7 @@ do
     potionToggle:OnChanged(function(value)
         _G.AutoPotion = value
         if autoPotionTask then
-            autoPotionTask:Disconnect()
+            task.cancel(autoPotionTask)
             autoPotionTask = nil
         end
         if value then
