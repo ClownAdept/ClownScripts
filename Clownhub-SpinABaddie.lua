@@ -445,6 +445,8 @@ do
                 local tween = TweenService:Create(hrpPlayer, TweenInfo.new(dist / speed, Enum.EasingStyle.Linear), {CFrame = hrp.CFrame})
                 tween:Play()
                 tween.Completed:Wait()
+                wait(1)
+                fireproximityprompt(prompt)
             end
             if prompt then
                 repeat
