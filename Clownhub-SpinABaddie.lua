@@ -396,114 +396,74 @@ do
     end)
 
     -- Auto Buy Merchant
-    local merchantToggle = Tabs.Farm:AddToggle("AutoBuyMerchant", {
-        Title = "Auto Buy Merchant",
-        Default = false
-    })
-
-    merchantToggle:OnChanged(function(value)
-        _G.MerchantAuto = value
-    end)
-
-    local Players = game:GetService("Players")
-    local ReplicatedStorage = game:GetService("ReplicatedStorage")
-    local TweenService = game:GetService("TweenService")
-    local player = Players.LocalPlayer
-    local char = player.Character or player.CharacterAdded:Wait()
-    local hrpPlayer = char:WaitForChild("HumanoidRootPart")
-    local merchantBuy = ReplicatedStorage:WaitForChild("Events"):WaitForChild("MerchantBuy")
-
-    local WORKERS = 5
-
-    -- Buy stock in parallel
-    local function buyStockParallel(offerIndex, amount)
-        local remaining = amount
+    local merchantToggle = Tabs.Farm:AddToggle("AutoBuyMerchant",{Title="Auto Buy Merchant",Default=false})
+    merchantToggle:OnChanged(function(value)_G.MerchantAuto=value end)
+    local Players=game:GetService("Players")
+    local ReplicatedStorage=game:GetService("ReplicatedStorage")
+    local TweenService=game:GetService("TweenService")
+    local player=Players.LocalPlayer
+    local char=player.Character or player.CharacterAdded:Wait()
+    local hrpPlayer=char:WaitForChild("HumanoidRootPart")
+    local merchantBuy=ReplicatedStorage:WaitForChild("Events"):WaitForChild("MerchantBuy")
+    local WORKERS=5
+    local function buyStockParallel(offerIndex,amount)
+        local remaining=amount
         local function worker()
-            while remaining > 0 and _G.MerchantAuto do
-                remaining -= 1
+            while remaining>0 and _G.MerchantAuto do
+                remaining-=1
                 pcall(function()
                     merchantBuy:InvokeServer(offerIndex)
                 end)
                 task.wait()
             end
         end
-        for _ = 1, WORKERS do
-            task.spawn(worker)
-        end
+        for _=1,WORKERS do task.spawn(worker) end
     end
-
-    -- Main merchant loop
     task.spawn(function()
-        local lastMerchant = nil
+        local lastMerchant=nil
         while true do
             task.wait(0.5)
             if Fluent.Unloaded then break end
             if not _G.MerchantAuto then continue end
-
-            local outer = workspace:FindFirstChild("Nullity")
-            local merchant = outer and outer:FindFirstChild("Nullity")
-            if not merchant or merchant == lastMerchant then
-                continue -- no new merchant or same as before
-            end
-
-            lastMerchant = merchant -- track current merchant
-
-            local hrp = merchant:FindFirstChild("HumanoidRootPart")
-            local prompt = hrp and hrp:FindFirstChildOfClass("ProximityPrompt")
+            local outer=workspace:FindFirstChild("Nullity")
+            local merchant=outer and outer:FindFirstChild("Nullity")
+            if not merchant or merchant==lastMerchant then continue end
+            lastMerchant=merchant
+            local hrp=merchant:FindFirstChild("HumanoidRootPart")
+            local prompt=hrp and hrp:FindFirstChildOfClass("ProximityPrompt")
             if hrp then
-                -- Tween to merchant
-                local distance = (hrp.Position - hrpPlayer.Position).Magnitude
-                local speed = 150
-                local time = distance / speed
-                local tween = TweenService:Create(
-                    hrpPlayer,
-                    TweenInfo.new(time, Enum.EasingStyle.Linear),
-                    {CFrame = hrp.CFrame}
-                )
+                local distance=(hrp.Position-hrpPlayer.Position).Magnitude
+                local speed=150
+                local time=distance/speed
+                local tween=TweenService:Create(hrpPlayer,TweenInfo.new(time,Enum.EasingStyle.Linear),{CFrame=hrp.CFrame})
                 tween:Play()
                 tween.Completed:Wait()
             end
-
-            if prompt then
-                pcall(fireproximityprompt, prompt)
-            end
-
-            -- Buy all offers
-            local shop = player.PlayerGui:FindFirstChild("Main")
-                and player.PlayerGui.Main:FindFirstChild("MerchantShop")
-            local offers = shop
-                and shop:FindFirstChild("ScrollingFrame")
-                and shop.ScrollingFrame:FindFirstChild("DiceOffers")
-
+            if prompt then pcall(fireproximityprompt,prompt) end
+            local shop=player.PlayerGui:FindFirstChild("Main") and player.PlayerGui.Main:FindFirstChild("MerchantShop")
+            local offers=shop and shop:FindFirstChild("ScrollingFrame") and shop.ScrollingFrame:FindFirstChild("DiceOffers")
             if offers then
-                for i = 1, 3 do
-                    local offer = offers:FindFirstChild("Offer_" .. i)
-                    local stockLabel = offer and offer:FindFirstChild("Stock")
-                    if stockLabel and stockLabel.Text ~= "SOLD OUT" then
-                        local stock = tonumber(stockLabel.Text:match("%d+"))
-                        if stock and stock > 0 then
-                            buyStockParallel(i, stock)
-                        end
+                for i=1,3 do
+                    local offer=offers:FindFirstChild("Offer_"..i)
+                    local stockLabel=offer and offer:FindFirstChild("Stock")
+                    if stockLabel and stockLabel.Text~="SOLD OUT" then
+                        local stock=tonumber(stockLabel.Text:match("%d+"))
+                        if stock and stock>0 then buyStockParallel(i,stock) end
                     end
                 end
             end
-
-            -- Wait until all stock is bought
-            repeat
-                task.wait(0.5)
-                local allSoldOut = true
-                for i = 1, 3 do
-                    local offer = offers:FindFirstChild("Offer_" .. i)
-                    local stockLabel = offer and offer:FindFirstChild("Stock")
-                    if stockLabel and stockLabel.Text ~= "SOLD OUT" then
-                        allSoldOut = false
+            repeat task.wait(0.5)
+                local allSoldOut=true
+                for i=1,3 do
+                    local offer=offers:FindFirstChild("Offer_"..i)
+                    local stockLabel=offer and offer:FindFirstChild("Stock")
+                    if stockLabel and stockLabel.Text~="SOLD OUT" then
+                        allSoldOut=false
                         break
                     end
                 end
             until allSoldOut or not _G.MerchantAuto
-
-            -- Stop until next merchant spawns
-            lastMerchant = merchant
+            lastMerchant=merchant
         end
     end)
 
