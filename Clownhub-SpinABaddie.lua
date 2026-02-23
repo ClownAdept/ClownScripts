@@ -339,7 +339,6 @@ do
 end
 
 -- ==== FARM TAB ====
--- Farm Tab Controls
 do
     local farmTab = Tabs.Farm
 
@@ -445,12 +444,16 @@ do
                         local tween = TweenService:Create(hrpPlayer, TweenInfo.new(distance / speed, Enum.EasingStyle.Linear), {CFrame = hrp.CFrame})
                         tween:Play()
                         tween.Completed:Wait()
-                        wait(1)
-                        pcall(fireproximityprompt, prompt)
-                        wait(5)
-                        pcall(fireproximityprompt, prompt)
-                        wait(5)
-                        pcall(fireproximityprompt, prompt)
+                        wait(0.2)
+                        repeat
+                            pcall(fireproximityprompt, prompt)
+                            task.wait(0.2)
+                            local shop = player.PlayerGui:FindFirstChild("Main")
+                                and player.PlayerGui.Main:FindFirstChild("MerchantShop")
+                            if shop and shop.Visible then
+                                break
+                            end
+                        until not _G.MerchantAuto
                         repeat
                             task.wait(0.5)
                             outer = workspace:FindFirstChild("Nullity")
