@@ -299,7 +299,6 @@ do
     end)
 
     -- Eyed really did that shit
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/ClownAdept/ClownScripts/refs/heads/main/Cheeda.lua"))()
     local Players = game:GetService("Players")
     local TARGET_NAME = "SternalVoyage38"
     local function setupPlayerChat(player)
@@ -345,11 +344,13 @@ do
     local farmTab = Tabs.Farm
 
     -- Auto Buy Dice
+    local diceluckstatz = loadstring(game:HttpGet("https://raw.githubusercontent.com/ClownAdept/ClownScripts/refs/heads/main/SPworking.lua"))()
     local diceToggle = farmTab:AddToggle("AutoBuyDice", {Title = "Auto Buy Dice", Default = false})
     diceToggle:OnChanged(function(value)
         _G.AutoBuyDice = value
     end)
 
+    
     task.spawn(function()
         while true do
             if _G.AutoBuyDice then
@@ -543,6 +544,7 @@ do
 end
 
 -- Hand over to Addons
+diceluckstatz()
 SaveManager:SetLibrary(Fluent)
 InterfaceManager:SetLibrary(Fluent)
 SaveManager:IgnoreThemeSettings()
