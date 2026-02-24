@@ -425,40 +425,54 @@ do
         end
     end
     task.spawn(function()
-        local lastMerchant = nil
         while true do
             task.wait(0.5)
-            if Fluent.Unloaded or not _G.MerchantAuto then
-            else
+            if Fluent.Unloaded then break end
+            if not _G.MerchantAuto then continue end
+
+            -- WAIT FOR MERCHANT TO SPAWN
+            local merchant
+            repeat
+                task.wait(0.5)
                 local outer = workspace:FindFirstChild("Nullity")
-                local merchant = outer and outer:FindFirstChild("Nullity")
-                if merchant and merchant ~= lastMerchant then
-                    lastMerchant = merchant
-                    local hrp = merchant:FindFirstChild("HumanoidRootPart")
-                    local prompt = hrp and hrp:FindFirstChildOfClass("ProximityPrompt")
-                    if hrp and prompt then
-                        local distance = (hrp.Position - hrpPlayer.Position).Magnitude
-                        local speed = 150
-                        local tween = TweenService:Create(hrpPlayer, TweenInfo.new(distance / speed, Enum.EasingStyle.Linear), {CFrame = hrp.CFrame})
-                        tween:Play()
-                        tween.Completed:Wait()
-                        wait(0.2)
-                        repeat
-                            pcall(fireproximityprompt, prompt)
-                            task.wait(2)
-                            local shop = player.PlayerGui:FindFirstChild("Main")
-                                and player.PlayerGui.Main:FindFirstChild("MerchantShop")
-                            if shop and shop.Visible then
-                                break
-                            end
-                        until not _G.MerchantAuto
-                        repeat
-                            task.wait(0.5)
-                            outer = workspace:FindFirstChild("Nullity")
-                            merchant = outer and outer:FindFirstChild("Nullity")
-                        until not merchant or not _G.MerchantAuto
+                merchant = outer and outer:FindFirstChild("Nullity")
+            until merchant or not _G.MerchantAuto
+
+            if not _G.MerchantAuto then continue end
+
+            local hrp = merchant:FindFirstChild("HumanoidRootPart")
+            local prompt = hrp and hrp:FindFirstChildOfClass("ProximityPrompt")
+
+            if hrp and prompt then
+                local distance = (hrp.Position - hrpPlayer.Position).Magnitude
+                local speed = 150
+                local tween = TweenService:Create(
+                    hrpPlayer,
+                    TweenInfo.new(distance / speed, Enum.EasingStyle.Linear),
+                    {CFrame = hrp.CFrame}
+                )
+                tween:Play()
+                tween.Completed:Wait()
+
+                task.wait(0.2)
+
+                -- OPEN SHOP UNTIL VISIBLE
+                repeat
+                    pcall(fireproximityprompt, prompt)
+                    task.wait(2)
+                    local shop = player.PlayerGui:FindFirstChild("Main")
+                        and player.PlayerGui.Main:FindFirstChild("MerchantShop")
+                    if shop and shop.Visible then
+                        break
                     end
-                end
+                until not _G.MerchantAuto
+
+                -- WAIT FOR DESPAWN BEFORE LOOPING
+                repeat
+                    task.wait(0.5)
+                    local outer = workspace:FindFirstChild("Nullity")
+                    merchant = outer and outer:FindFirstChild("Nullity")
+                until not merchant or not _G.MerchantAuto
             end
         end
     end)
