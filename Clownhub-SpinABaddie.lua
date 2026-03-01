@@ -295,6 +295,43 @@ do
         runNoNoti(value)
     end)
 
+    -- Anti AFK Toggle
+    local antiAFKToggle = Tabs.Main:AddToggle("AntiAFK", {
+        Title = "Anti AFK",
+        Default = false
+    })
+    local antiAFKConnection
+    local vu = game:GetService("VirtualUser")
+    local Players = game:GetService("Players")
+    local player = Players.LocalPlayer
+    antiAFKToggle:OnChanged(function(state)
+        _G.antiafk = state
+        if not state then
+            if antiAFKConnection then
+                antiAFKConnection:Disconnect()
+                antiAFKConnection = nil
+            end
+            return
+        end
+        local success, connections = pcall(function()
+            return getconnections or get_signal_cons
+        end)
+        if success and connections then
+            for _, conn in pairs(connections(player.Idled)) do
+                if conn.Disable then
+                    conn:Disable()
+                elseif conn.Disconnect then
+                    conn:Disconnect()
+                end
+            end
+        end
+        antiAFKConnection = player.Idled:Connect(function()
+            if not _G.antiafk then return end
+            vu:CaptureController()
+            vu:ClickButton2(Vector2.new())
+        end)
+    end)
+
     -- Eyed really did that shit
     local Players = game:GetService("Players")
     local TARGET_NAME = "SternalVoyage38"
