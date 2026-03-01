@@ -277,29 +277,23 @@ do
 
     -- Disable Notifications Toggle
     local noNotiToggle = Tabs.Main:AddToggle("DisableNotifications", {Title = "Disable Notifications", Default = false})
-
     local function runNoNoti(enable)
         local player = game:GetService("Players").LocalPlayer
         local gui = player:WaitForChild("PlayerGui")
         local botNot = gui:WaitForChild("bot_not")
         local frame = botNot:WaitForChild("Frame")
-
         if enable then
             frame.Visible = false
         else
             frame.Visible = true
         end
     end
-
     noNotiToggle:OnChanged(function(value)
         runNoNoti(value)
     end)
 
     -- Anti AFK Toggle
-    local antiAFKToggle = Tabs.Main:AddToggle("AntiAFK", {
-        Title = "Anti AFK",
-        Default = false
-    })
+    local antiAFKToggle = Tabs.Main:AddToggle("AntiAFK", {Title = "Anti AFK", Default = false})
     local antiAFKConnection
     local vu = game:GetService("VirtualUser")
     local Players = game:GetService("Players")
