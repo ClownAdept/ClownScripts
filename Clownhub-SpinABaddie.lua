@@ -15,6 +15,7 @@ local Window = Fluent:CreateWindow({
 local Tabs = {
     Main = Window:AddTab({ Title = "Main", Icon = "" }),
     Farm = Window:AddTab({ Title = "Farm", Icon = "" }),
+    Eggs = Window:AddTab({ Title = "Eggs", Icon = "" }),
     Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
 }
 
@@ -583,6 +584,76 @@ do
         end
     end)
 end
+
+-- Egg Tab Controls
+do
+    local eggTab = Tabs.Eggs
+
+    local selectedEgg = nil
+    local eggWorkers = 1
+
+    -- Get Egg List
+    local function getEggs()
+        local list = {}
+        local eggsFolder = workspace:FindFirstChild("Eggs")
+
+        if eggsFolder then
+            for _, v in ipairs(eggsFolder:GetChildren()) do
+                if v:IsA("Model") then
+                    table.insert(list, v.Name)
+                end
+            end
+        end
+
+        return list
+    end
+
+    -- Egg Dropdown
+    local eggDropdown = eggTab:AddDropdown("EggSelect", {
+        Title = "Select Egg",
+        Values = getEggs(),
+        Multi = false,
+        Default = nil
+    })
+
+    eggDropdown:OnChanged(function(value)
+        selectedEgg = value
+    end)
+
+    -- Worker Input
+    local workerInput = eggTab:AddInput("EggWorkers", {
+        Title = "Amount",
+        Default = "1",
+        Numeric = true,
+        Finished = true
+    })
+
+    workerInput:OnChanged(function(value)
+        eggWorkers = tonumber(value) or 1
+    end)
+
+    -- Open Eggs Button
+    eggTab:AddButton({
+        Title = "Open Eggs",
+        Callback = function()
+
+            if not selectedEgg then
+                warn("No egg selected")
+                return
+            end
+
+            for i = 1, eggWorkers do
+                task.spawn(function()
+                    pcall(function()
+                        ReplicatedStorage.Events.RegularPet:InvokeServer(selectedEgg, 1)
+                    end)
+                end)
+            end
+
+        end
+    })
+end
+
 
 -- Hand over to Addons
 SaveManager:SetLibrary(Fluent)
