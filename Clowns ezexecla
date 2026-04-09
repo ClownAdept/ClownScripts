@@ -52,7 +52,9 @@ local function getWeaponType()
         ["Warrior"] = "Sword",
         ["Slayer"] = "Spear",
         ["Thief"] = "Dagger",
-        ["Wizard"] = "Magic"
+        ["Wizard"] = "Magic",
+        ["Marauder"] = "Axe",
+        ["Sentry"] = "Hammer"
     }
     return classToWeapon[className]
 end
