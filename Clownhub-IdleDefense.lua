@@ -80,6 +80,13 @@ do
 		while true do
 			if _G.AutoMerchant then
 				local player = game:GetService("Players").LocalPlayer
+
+				pcall(function()
+					fireproximityprompt(workspace.Map.Scripted.MerchantPrompt.ProximityPrompt)
+				end)
+
+				task.wait(0.5)
+
 				local offersFolder = player.PlayerGui.Main.MerchantShop.MainFrame.CurrentOffers.ScrollingFrame
 
 				for i = 1, 5 do
@@ -102,6 +109,58 @@ do
 			end
 
 			task.wait(0.5)
+
+			if Fluent.Unloaded then
+				break
+			end
+		end
+	end)
+
+		-- Hide Merchant Toggle
+	local hideMerchantToggle = Tabs.Main:AddToggle("HideMerchant", {
+		Title = "Hide Merchant",
+		Default = false
+	})
+
+	hideMerchantToggle:OnChanged(function(value)
+		_G.HideMerchant = value
+
+		local player = game:GetService("Players").LocalPlayer
+		local gui = player.PlayerGui:FindFirstChild("Main")
+
+		if gui and gui:FindFirstChild("MerchantShop") then
+			gui.MerchantShop.Visible = not value
+		end
+
+		local lighting = game:GetService("Lighting")
+
+		for _, effect in ipairs(lighting:GetChildren()) do
+			if effect:IsA("BlurEffect") then
+				effect.Enabled = not value
+			end
+		end
+	end)
+
+	task.spawn(function()
+		while true do
+			if _G.HideMerchant then
+				local player = game:GetService("Players").LocalPlayer
+				local gui = player.PlayerGui:FindFirstChild("Main")
+
+				if gui and gui:FindFirstChild("MerchantShop") then
+					gui.MerchantShop.Visible = false
+				end
+
+				local lighting = game:GetService("Lighting")
+
+				for _, effect in ipairs(lighting:GetChildren()) do
+					if effect:IsA("BlurEffect") then
+						effect.Enabled = false
+					end
+				end
+			end
+
+			task.wait(0.2)
 
 			if Fluent.Unloaded then
 				break
