@@ -115,12 +115,15 @@ do
 			end
 		end
 	end)
-
-		-- Hide Merchant Toggle
+d
+	-- Hide Merchant Toggle
 	local hideMerchantToggle = Tabs.Main:AddToggle("HideMerchant", {
 		Title = "Hide Merchant",
 		Default = false
 	})
+
+	local camera = workspace.CurrentCamera
+	local defaultFOV = camera.FieldOfView
 
 	hideMerchantToggle:OnChanged(function(value)
 		_G.HideMerchant = value
@@ -138,6 +141,10 @@ do
 			if effect:IsA("BlurEffect") then
 				effect.Enabled = not value
 			end
+		end
+
+		if value then
+			camera.FieldOfView = defaultFOV
 		end
 	end)
 
@@ -158,9 +165,11 @@ do
 						effect.Enabled = false
 					end
 				end
+
+				camera.FieldOfView = defaultFOV
 			end
 
-			task.wait(0.2)
+			task.wait(0.1)
 
 			if Fluent.Unloaded then
 				break
