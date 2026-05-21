@@ -167,6 +167,32 @@ do
 			end
 		end
 	end)
+
+	-- Auto Claim Daily Reward Toggle
+	local dailyRewardToggle = Tabs.Main:AddToggle("AutoClaimDailyReward", {
+		Title = "Auto Claim Daily Reward",
+		Default = false
+	})
+
+	dailyRewardToggle:OnChanged(function(value)
+		_G.AutoClaimDailyReward = value
+	end)
+
+	task.spawn(function()
+		while true do
+			if _G.AutoClaimDailyReward then
+				pcall(function()
+					game:GetService("ReplicatedStorage"):WaitForChild("ClaimDailyReward"):FireServer()
+				end)
+			end
+
+			task.wait(5)
+
+			if Fluent.Unloaded then
+				break
+			end
+		end
+	end)
 end
 end
 
