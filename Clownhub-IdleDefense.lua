@@ -18,8 +18,7 @@ local Tabs = {
     Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
 }
 
--- MAIN TAB
-do
+
 -- MAIN TAB
 do
     -- Auto AFK Toggle
@@ -115,7 +114,7 @@ do
 			end
 		end
 	end)
-d
+
 	-- Hide Merchant Toggle
 	local hideMerchantToggle = Tabs.Main:AddToggle("HideMerchant", {
 		Title = "Hide Merchant",
@@ -156,6 +155,10 @@ d
 
 				if gui and gui:FindFirstChild("MerchantShop") then
 					gui.MerchantShop.Visible = false
+				end
+
+				if gui and gui:FindFirstChild("UnitInventory") then
+					gui.UnitInventory.Visible = false
 				end
 
 				local lighting = game:GetService("Lighting")
@@ -203,10 +206,250 @@ d
 		end
 	end)
 end
+
+-- MERCHANT DATA FUNCTION
+local function getMerchantWebhookData()
+	local player = game:GetService("Players").LocalPlayer
+
+	local merchantFrame = player.PlayerGui.Main.MerchantShop.MainFrame.CurrentOffers.ScrollingFrame
+	local inventoryFrame = player.PlayerGui.Main.UnitInventory.MainFrame.InventoryFrame
+
+	local itemFrames = {
+		inventoryFrame.ItemsScrollingFrame,
+		inventoryFrame.UnitScrollingFrame
+	}
+
+	local rewards = {}
+
+	for i = 1, 5 do
+		local offer = merchantFrame:FindFirstChild("Offer_" .. i)
+
+		if offer then
+			local icon = offer:FindFirstChild("UnitIcon")
+			local amountLabel = offer:FindFirstChild("UnitAmount")
+
+			if icon and amountLabel then
+				local imageId = icon.Image
+				local amount = amountLabel.Text
+
+				local foundName = "Unknown Item"
+				local totalOwned = "0"
+
+				for _, folder in ipairs(itemFrames) do
+					for _, item in ipairs(folder:GetChildren()) do
+						if item:IsA("TextButton") then
+							local unitIcon = item:FindFirstChild("UnitIcon")
+
+							if unitIcon and unitIcon.Image == imageId then
+								foundName = item.Name
+
+								local totalLabel = item:FindFirstChild("UnitAmount")
+								if totalLabel then
+									totalOwned = totalLabel.Text
+								end
+
+								break
+							end
+						end
+					end
+				end
+
+				table.insert(rewards,
+					"+ " .. amount .. " " .. foundName .. " (total: " .. totalOwned .. ")"
+				)
+			end
+		end
+	end
+
+	local timerText = player.PlayerGui.Main.MerchantShop.MainFrame.Timer.Text
+	timerText = timerText:gsub("Resets in:%s*", "")
+
+	local username = player.Name
+	local displayname = player.DisplayName
+
+	local description =
+		"**Player Infos**\n" ..
+		"User : " .. displayname .. " (@" .. username .. ")\n\n" ..
+		"**Merchant Rewards**\n" ..
+		table.concat(rewards, "\n") ..
+		"\n\n**Merchant Reset in " .. timerText .. "**\n\n" ..
+		"ClownHub - Time (" .. os.date("%H:%M:%S") .. ")"
+
+	return description
 end
+
 
 -- WEBHOOK TAB
 do
+	_G.WebhookEnabled = false
+	_G.MerchantWebhook = false
+	_G.EventWebhook = false
+	_G.BannerWebhook = false
+	_G.WebhookURL = ""
+
+	local HttpService = game:GetService("HttpService")
+	local Players = game:GetService("Players")
+
+	local requestfunc = http_request or request or syn.request
+
+	-- INPUT
+	Tabs.Webhook:AddInput("WebhookURL", {
+		Title = "Webhook URL",
+		Default = "",
+		Placeholder = "Discord Webhook URL",
+		Numeric = false,
+		Finished = true,
+		Callback = function(value)
+			_G.WebhookURL = value
+		end
+	})
+
+	-- TOGGLES
+	local webhookToggle = Tabs.Webhook:AddToggle("WebhookEnabled", {
+		Title = "Enable Webhooks",
+		Default = false
+	})
+
+	webhookToggle:OnChanged(function(value)
+		_G.WebhookEnabled = value
+	end)
+
+	local merchantToggle = Tabs.Webhook:AddToggle("MerchantWebhook", {
+		Title = "Merchant Webhook",
+		Default = false
+	})
+
+	merchantToggle:OnChanged(function(value)
+		_G.MerchantWebhook = value
+	end)
+
+	local eventToggle = Tabs.Webhook:AddToggle("EventWebhook", {
+		Title = "Event Webhook",
+		Default = false
+	})
+
+	eventToggle:OnChanged(function(value)
+		_G.EventWebhook = value
+	end)
+
+	local bannerToggle = Tabs.Webhook:AddToggle("BannerWebhook", {
+		Title = "Banner Webhook",
+		Default = false
+	})
+
+	bannerToggle:OnChanged(function(value)
+		_G.BannerWebhook = value
+	end)
+
+	-- SEND FUNCTION
+	local function sendWebhook(title, description)
+		if not _G.WebhookEnabled then return end
+		if _G.WebhookURL == "" then return end
+
+		local data = {
+			content = "",
+			embeds = {
+				{
+					title = title,
+					description = description,
+					color = 65280
+				}
+			}
+		}
+
+		local encoded = HttpService:JSONEncode(data)
+
+		pcall(function()
+			requestfunc({
+				Url = _G.WebhookURL,
+				Method = "POST",
+				Headers = {
+					["Content-Type"] = "application/json"
+				},
+				Body = encoded
+			})
+		end)
+	end
+
+	-- TEST BUTTON
+	Tabs.Webhook:AddButton({
+		Title = "Test Webhook",
+		Callback = function()
+			sendWebhook(
+				"Webhook Connected",
+				"Player: " .. Players.LocalPlayer.Name
+			)
+		end
+	})
+
+	-- MANUAL MERCHANT BUTTON
+	Tabs.Webhook:AddButton({
+		Title = "Send Merchant Webhook",
+		Callback = function()
+			if not _G.MerchantWebhook then return end
+
+			sendWebhook(
+				"Merchant Shop Update",
+				getMerchantWebhookData()
+			)
+		end
+	})
+
+	-- AUTO MERCHANT (SEND ON LOAD + THEN ON REFRESH)
+	task.spawn(function()
+		local lastTimer = nil
+		local sentThisCycle = false
+		local firstRun = true
+
+		while task.wait(5) do
+			if not _G.WebhookEnabled then continue end
+			if not _G.MerchantWebhook then continue end
+			if _G.WebhookURL == "" then continue end
+
+			local success, data = pcall(function()
+				local player = game:GetService("Players").LocalPlayer
+				return player.PlayerGui.Main.MerchantShop.MainFrame.Timer.Text
+			end)
+
+			if success and data then
+				local timer = data:gsub("Resets in:%s*", "")
+
+				-- initialize state
+				if lastTimer == nil then
+					lastTimer = timer
+				end
+
+				-- 🔥 FIRST LOAD SEND
+				if firstRun then
+					firstRun = false
+					sentThisCycle = true
+					lastTimer = timer
+
+					sendWebhook(
+						"Merchant Shop Loaded",
+						getMerchantWebhookData()
+					)
+				end
+
+				-- detect refresh (timer jumps back up)
+				if timer > lastTimer then
+					sentThisCycle = false
+				end
+
+				lastTimer = timer
+
+				-- send once per new cycle
+				if not sentThisCycle then
+					sentThisCycle = true
+
+					sendWebhook(
+						"Merchant Shop Refreshed",
+						getMerchantWebhookData()
+					)
+				end
+			end
+		end
+	end)
 
 end
 
