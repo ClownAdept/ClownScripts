@@ -205,6 +205,75 @@ do
 			end
 		end
 	end)
+
+	-- BANNERS SECTION
+	local BannerSection = Tabs.Main:AddSection("Banners")
+
+	local summonAmount = 1
+	local summonBanner = "MainUnitShop"
+	local summonSellOptions = {
+		Legendary = false,
+		Common = false,
+		Mythic = false,
+		Epic = false,
+		Rare = false
+	}
+
+	BannerSection:AddInput("SummonAmount", {
+		Title = "Summon Amount",
+		Default = "1",
+		Placeholder = "Enter amount",
+		Numeric = true,
+		Finished = false,
+		Callback = function(value)
+			summonAmount = tonumber(value) or 1
+		end
+	})
+
+	BannerSection:AddDropdown("BannerType", {
+		Title = "Banner",
+		Values = {"MainUnitShop", "AdvancedUnitShop"},
+		Multi = false,
+		Default = 1,
+		Callback = function(value)
+			summonBanner = value
+		end
+	})
+
+	BannerSection:AddDropdown("AutoSell", {
+		Title = "Auto Sell",
+		Values = {"Legendary", "Common", "Mythic", "Epic", "Rare"},
+		Multi = true,
+		Default = {},
+		Callback = function(value)
+			summonSellOptions = {
+				Legendary = value.Legendary or false,
+				Common = value.Common or false,
+				Mythic = value.Mythic or false,
+				Epic = value.Epic or false,
+				Rare = value.Rare or false
+			}
+		end
+	})
+
+	BannerSection:AddButton({
+		Title = "Summon Selected",
+		Callback = function()
+			local args = {
+				summonBanner,
+				summonAmount,
+				{
+					Legendary = summonSellOptions.Legendary,
+					Common = summonSellOptions.Common,
+					Mythic = summonSellOptions.Mythic,
+					Epic = summonSellOptions.Epic,
+					Rare = summonSellOptions.Rare
+				}
+			}
+
+			game:GetService("ReplicatedStorage"):WaitForChild("BuyUnit"):InvokeServer(unpack(args))
+		end
+	})
 end
 
 -- MERCHANT DATA FUNCTION
@@ -282,9 +351,7 @@ end
 -- WEBHOOK TAB
 do
 	_G.WebhookEnabled = false
-	_G.MerchantWebhook = false
-	_G.EventWebhook = false
-	_G.BannerWebhook = false
+	_G.DarkAuraWebhook = false
 	_G.WebhookURL = ""
 
 	local HttpService = game:GetService("HttpService")
@@ -292,69 +359,17 @@ do
 
 	local requestfunc = http_request or request or syn.request
 
-	-- INPUT
-	Tabs.Webhook:AddInput("WebhookURL", {
-		Title = "Webhook URL",
-		Default = "",
-		Placeholder = "Discord Webhook URL",
-		Numeric = false,
-		Finished = true,
-		Callback = function(value)
-			_G.WebhookURL = value
-		end
-	})
-
-	-- TOGGLES
-	local webhookToggle = Tabs.Webhook:AddToggle("WebhookEnabled", {
-		Title = "Enable Webhooks",
-		Default = false
-	})
-
-	webhookToggle:OnChanged(function(value)
-		_G.WebhookEnabled = value
-	end)
-
-	local merchantToggle = Tabs.Webhook:AddToggle("MerchantWebhook", {
-		Title = "Merchant Webhook",
-		Default = false
-	})
-
-	merchantToggle:OnChanged(function(value)
-		_G.MerchantWebhook = value
-	end)
-
-	local eventToggle = Tabs.Webhook:AddToggle("EventWebhook", {
-		Title = "Event Webhook",
-		Default = false
-	})
-
-	eventToggle:OnChanged(function(value)
-		_G.EventWebhook = value
-	end)
-
-	local bannerToggle = Tabs.Webhook:AddToggle("BannerWebhook", {
-		Title = "Banner Webhook",
-		Default = false
-	})
-
-	bannerToggle:OnChanged(function(value)
-		_G.BannerWebhook = value
-	end)
-
-	-- SEND FUNCTION
 	local function sendWebhook(title, description)
 		if not _G.WebhookEnabled then return end
-		if _G.WebhookURL == "" then return end
+		if not _G.WebhookURL or _G.WebhookURL == "" then return end
 
 		local data = {
 			content = "",
-			embeds = {
-				{
-					title = title,
-					description = description,
-					color = 65280
-				}
-			}
+			embeds = {{
+				title = title,
+				description = description,
+				color = 65280
+			}}
 		}
 
 		local encoded = HttpService:JSONEncode(data)
@@ -371,86 +386,108 @@ do
 		end)
 	end
 
-	-- TEST BUTTON
+	-- INPUT
+	Tabs.Webhook:AddInput("WebhookURL", {
+		Title = "Webhook URL",
+		Default = "",
+		Placeholder = "Discord Webhook URL",
+		Numeric = false,
+		Finished = false,
+		Callback = function(value)
+			_G.WebhookURL = value
+		end
+	})
+
+	local webhookToggle = Tabs.Webhook:AddToggle("WebhookEnabled", {
+		Title = "Enable Webhooks",
+		Default = false
+	})
+
+	webhookToggle:OnChanged(function(value)
+		_G.WebhookEnabled = value
+	end)
+
+	local darkAuraToggle = Tabs.Webhook:AddToggle("DarkAuraWebhook", {
+		Title = "Dark Aura",
+		Default = false
+	})
+
+	darkAuraToggle:OnChanged(function(value)
+		_G.DarkAuraWebhook = value
+	end)
+
+	local lastDarkAura = nil
+
+	local function getDarkAuraAmount()
+		local player = Players.LocalPlayer
+		local pg = player:FindFirstChild("PlayerGui")
+		if not pg then return nil end
+
+		local ui = pg:FindFirstChild("OnScreen")
+		if not ui then return nil end
+
+		local sidebar = ui:FindFirstChild("Sidebar")
+		if not sidebar then return nil end
+
+		local frames = sidebar:FindFirstChild("CurrencyFrames")
+		if not frames then return nil end
+
+		local darkAura = frames:FindFirstChild("DarkAura")
+		if not darkAura then return nil end
+
+		return darkAura:FindFirstChild("Amount")
+	end
+
+	task.spawn(function()
+		while true do
+			task.wait(1)
+
+			if Fluent and Fluent.Unloaded then break end
+			if not _G.WebhookEnabled or not _G.DarkAuraWebhook then continue end
+
+			local amountLabel = getDarkAuraAmount()
+			if not amountLabel then continue end
+
+			local text = tostring(amountLabel.Text or "")
+			local cleaned = string.gsub(text, "%D", "")
+			local currentAmount = tonumber(cleaned) or 0
+
+			if lastDarkAura == nil then
+				lastDarkAura = currentAmount
+
+				sendWebhook(
+					"🖤 Dark Aura Tracker Started",
+					"Current Total: " .. currentAmount
+				)
+
+				continue
+			end
+
+			if currentAmount ~= lastDarkAura then
+				local gained = currentAmount - lastDarkAura
+
+				if gained > 0 then
+					sendWebhook(
+						"🖤 Dark Aura Gained",
+						"Amount Gained: " .. gained ..
+						"\nCurrent Total: " .. currentAmount
+					)
+				end
+
+				lastDarkAura = currentAmount
+			end
+		end
+	end)
+
 	Tabs.Webhook:AddButton({
 		Title = "Test Webhook",
 		Callback = function()
 			sendWebhook(
 				"Webhook Connected",
-				"Player: " .. Players.LocalPlayer.Name
+				"Idle Defense webhook successfully connected."
 			)
 		end
 	})
-
-	-- MANUAL MERCHANT BUTTON
-	Tabs.Webhook:AddButton({
-		Title = "Send Merchant Webhook",
-		Callback = function()
-			if not _G.MerchantWebhook then return end
-
-			sendWebhook(
-				"Merchant Shop Update",
-				getMerchantWebhookData()
-			)
-		end
-	})
-
-	-- AUTO MERCHANT (SEND ON LOAD + THEN ON REFRESH)
-	task.spawn(function()
-		local lastTimer = nil
-		local sentThisCycle = false
-		local firstRun = true
-
-		while task.wait(5) do
-			if not _G.WebhookEnabled then continue end
-			if not _G.MerchantWebhook then continue end
-			if _G.WebhookURL == "" then continue end
-
-			local success, data = pcall(function()
-				local player = game:GetService("Players").LocalPlayer
-				return player.PlayerGui.Main.MerchantShop.MainFrame.Timer.Text
-			end)
-
-			if success and data then
-				local timer = data:gsub("Resets in:%s*", "")
-
-				-- initialize state
-				if lastTimer == nil then
-					lastTimer = timer
-				end
-
-				-- 🔥 FIRST LOAD SEND
-				if firstRun then
-					firstRun = false
-					sentThisCycle = true
-					lastTimer = timer
-
-					sendWebhook(
-						"Merchant Shop Loaded",
-						getMerchantWebhookData()
-					)
-				end
-
-				-- detect refresh (timer jumps back up)
-				if timer > lastTimer then
-					sentThisCycle = false
-				end
-
-				lastTimer = timer
-
-				-- send once per new cycle
-				if not sentThisCycle then
-					sentThisCycle = true
-
-					sendWebhook(
-						"Merchant Shop Refreshed",
-						getMerchantWebhookData()
-					)
-				end
-			end
-		end
-	end)
-
 end
 
 -- SETTINGS TAB
